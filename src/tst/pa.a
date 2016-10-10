@@ -1,0 +1,19 @@
+; Programa pra calcular uma PA de n termos. n eh recebido como entrada.
+
+          loadi R0 254    ; Le n da entrada padrao
+          storeSp R0 -2   ; Empilha n
+		  moveSp -2       ; Move o ponteiro de pilha
+          call _Soma      ; Chama a funcao de soma
+		  loadSp R2 0     ; Desempilha o valor do resultado
+		  moveSp 2        ; Move o ponteiro de pilha
+		  storei R2 254   ; Imprime o resultado
+          exit
+_Soma:    loadSp R5 0     ; Carrega o valor de n, empilhado
+          moveSp 2        ; move o ponteiro de pilha
+_loop:    add R6 R5       ; acumula a soma em R6
+          addi R5 -1      ; Seleciona n-1, para ser somado
+          jmpz R5 _pula   ; Se esse valor for 0, sai do loop
+          jump _loop      ; Se nao, vai pra a proxima iteracao
+_pula:    storeSp R6 -2   ; Empilha o resultado
+		  moveSp -2       ; move o ponteiro de pilha
+          ret

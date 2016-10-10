@@ -1,0 +1,29 @@
+; Programa sem proposito para verificar se contem todas as instrucoes.
+
+        loadi R0 254
+        storei R0 254
+        add R0 R1
+        subtract R0 R1
+        multiply R0 R1
+        divide R0 R1
+        jump _teste
+        jmpz R1 _teste
+        jmpn R1 _teste
+        move R1 R0
+        load R1 R0
+        store R1 R0
+        loadc R1 10
+        clear R1
+        moveSp 4
+        slt R0 R1 R2
+        call _teste
+        loadSp R1 2
+        storeSp R1 2
+        ret
+        loadRa 3
+        storeRa 4
+        addi R1 5
+        sgt R0 R1 R2
+        seq R0 R1 R2
+        jmpp R0 _teste
+_teste: exit

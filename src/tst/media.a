@@ -1,0 +1,22 @@
+; Programa que calcula a media de dois numeros como entrada.
+; int * int -> int
+
+          loadi R0 254
+          loadi R1 254
+          storeSp R0 -2
+          storeSp R1 -4
+          moveSp -4
+          call _MEDIA
+          loadSp R0 0
+          moveSp 2
+          storei R0 254
+          exit
+_MEDIA:   loadSp R0 0
+          loadSp R1 2
+          moveSp 4
+          add R0 R1
+          loadc R1 2
+          divide R0 R1
+          storeSp R0 -2
+          moveSp -2
+          ret
