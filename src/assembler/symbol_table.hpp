@@ -4,7 +4,8 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
-#include <deque>
+// #include <deque>
+#include <vector>
 #include <sstream>      // std::ostringstream
 
 enum TypeSymbol {label, variable};
@@ -16,6 +17,7 @@ class Symbol {
 public:
   static int id;
   std::string name;
+  std::vector<int> location; // Grava todas as posições de ocorrencia
   int value;
   int num_bytes;
   TypeSymbol type;
@@ -27,7 +29,7 @@ public:
 
 class SymbolTable {
 private:
-  std::deque<Symbol*> symbol;
+  std::vector<Symbol*> symbol;
 public:
   bool verbose;
   int location_counter;
@@ -43,6 +45,11 @@ public:
    */
   bool redefine( int );
 
+  /*
+   * Adicionar informação para a tabela de símbolos
+   * para guardar informação para o linker.
+   */
+  bool getInfoSymbol(std::string);
   /*
    * Retorna String contendo a tabela de símbolos
    */

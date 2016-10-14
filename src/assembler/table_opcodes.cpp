@@ -68,7 +68,7 @@ TableOpcode::get_data(std::vector<std::string> fields) {
       r += int_to_hex(this->location_counter);
       r += "        :  ";
       if (i == many-1){
-        r += string_binary(std::stoi(fields[3])) + ";\n";
+        r += int_to_binary(std::stoi(fields[3])) + ";\n";
       }
       else { // Extendo números negativos com 1
         if (std::stoi(fields[3]) < 0)
@@ -87,6 +87,7 @@ TableOpcode::get_data(std::vector<std::string> fields) {
   return r;
 }
 
+// Transforma a string em assembly para bits em formato MIF
 std::string
 TableOpcode::get_line_mif(std::vector<std::string> fields) {
   std::string r; // to return
@@ -107,16 +108,16 @@ TableOpcode::get_line_mif(std::vector<std::string> fields) {
 
     r += int_to_hex(this->location_counter);
     r += "        :  ";
-    r += string_binary( (binary & 0xFF00) >> 8 ) + ";\n";
+    r += int_to_binary( (binary & 0xFF00) >> 8 ) + ";\n";
     this->location_counter++;
     r += int_to_hex(this->location_counter);
     r += "        :  ";
-    r += string_binary( binary & 0x00FF ) + ";\n";
+    r += int_to_binary( binary & 0x00FF ) + ";\n";
     this->location_counter++;
 
     if (this->verbose) { // DEBUG
-      std::cout << string_binary( (binary & 0xFF00) >> 8 )
-        << string_binary( binary & 0x00FF ) << std::endl;
+      std::cout << int_to_binary( (binary & 0xFF00) >> 8 )
+        << int_to_binary( binary & 0x00FF ) << std::endl;
     }
 
   }
@@ -141,7 +142,7 @@ int
 TableOpcode::get_instruction(std::vector<std::string> fields) {
   int binary, choice, temp;
   binary = choice = this->get_opcode_value(fields[0]);
-  
+
   temp = 0;
   switch (choice) {
     case 0: // EXIT      "exit",     0

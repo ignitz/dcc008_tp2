@@ -20,7 +20,7 @@ clearLine(std::string& line) {
 
 // Imprime 8 bits em binário
 std::string
-string_binary(int x) {
+int_to_binary(int x) {
   std::string r;
 
   for (int i = 0; i < 8; i++) {

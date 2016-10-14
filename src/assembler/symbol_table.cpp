@@ -48,7 +48,7 @@ SymbolTable::SymbolTable() {
 int
 SymbolTable::get_symbol_value(int i) {
   if (i >= 1 && i <= (int) this->symbol.size())
-    return this->symbol.at(i-1)->value;
+    return this->symbol[i-1]->value;
   else
     return -1;
 }
@@ -58,7 +58,15 @@ SymbolTable::get_symbol_value(std::string name) {
   int size = this->symbol.size();
   if (name.back() == ':') name.pop_back();
   for (int i = 0; i < size; i++)
-    if (this->symbol.at(i)->name.compare(name) == 0) return this->symbol.at(i)->value;
+  {
+    if (this->symbol[i]->name.compare(name) == 0)
+    {
+      this->symbol[i]->location.push_back(this->location_counter);
+      return this->symbol[i]->value;
+    }
+  }
+  std::cerr << "Warning: Símbolo " << name << " não declarado!" << std::endl;
+  std::cerr << "Continuando compilação!" << std::endl;
   return -1;
 }
 
@@ -66,7 +74,7 @@ bool
 SymbolTable::checkSymbol(std::string name) {
   int size = this->symbol.size();
   for (int i = 0; i < size; i++)
-    if (this->symbol.at(i)->name.compare(name) == 0) return true;
+    if (this->symbol[i]->name.compare(name) == 0) return true;
   return false;
 }
 
@@ -97,9 +105,9 @@ SymbolTable::redefine(int location_counter) {
   bool check = false;
   int size = this->symbol.size();
   for (int i = 0; i < size; i++) {
-    if (this->symbol.at(i)->name.front() != '_') {
-      this->symbol.at(i)->value = location_counter;
-      location_counter += this->symbol.at(i)->num_bytes;
+    if (this->symbol[i]->name.front() != '_') {
+      this->symbol[i]->value = location_counter;
+      location_counter += this->symbol[i]->num_bytes;
 
       check = true;
     }
@@ -107,6 +115,14 @@ SymbolTable::redefine(int location_counter) {
   return check;
 }
 
+// Serve pra guardar informações da utilização do símbolo
+// útil para o linker
+bool
+SymbolTable::getInfoSymbol(std::string name) {
+  std::cout << name << std::endl;
+  std::cout << this->location_counter << std::endl;
+  return true;
+}
 
 std::string
 SymbolTable::getTableSymbols() {
@@ -114,12 +130,16 @@ SymbolTable::getTableSymbols() {
 
   int size = this->symbol.size();
 
-  // ret << std::hex << std::setfill('0') << std::setw(2) << (upper_case ? std::uppercase : std::nouppercase) << (int)s[i];
-
   for (int i = 0; i < size; i++) {
-    ret << this->symbol.at(i)->name;
-    symbol.at(i)->name.size() < 7 ? ret << "\t\t" : ret << "\t";
-    ret << std::hex <<  this->symbol.at(i)->value << std::endl;
+    ret << this->symbol[i]->name;
+    symbol[i]->name.size() < 7 ? ret << "\t\t" : ret << "\t";
+    ret << std::hex <<  this->symbol[i]->value;
+
+    int size = symbol[i]->location.size();
+    for (int j = 0; j < size; j++) // Insere todas as localizações
+      ret << "\t" << symbol[i]->location[j];
+
+    ret << std::endl;
   }
 
   return ret.str();
