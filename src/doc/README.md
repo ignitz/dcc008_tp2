@@ -16,3 +16,8 @@ O trabalho consiste em criar um *linker* para o montador Wombat2.
   - Ajuste para que o tamanho do programa sempre termine em um tamanho ímpar (ou par (depende da sua métrica)) **Isso farei no linkador**.
   - Inseri o comando para EXTERN (chamada de função call para um label externo). Não testei, tem que testar, não quero testar...
     - Fiz um teste bobo no **all.a**.
+- Passos para o sucesso
+  - Abrir todos os módulos dicamicamente.
+  - Atualizar tabelas dos símbolos
+  - Encontrar todos os externs e atualizar na table symbol global.
+  - Encontrar todas as ocorrências dos símbolos e atualizá-las.

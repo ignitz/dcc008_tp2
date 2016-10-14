@@ -207,9 +207,9 @@ about:
 # 	@./$(BIN_NAME) tst/pa.a -o tst/pa.mif
 
 # Execute Verbose
-# .PHONY: v
-# v:
-# 	@./$(BIN_NAME) ../files/W2-1.a -v
+.PHONY: v
+v:
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/pa -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)
