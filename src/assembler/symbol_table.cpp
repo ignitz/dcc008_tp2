@@ -115,6 +115,23 @@ SymbolTable::redefine(int location_counter) {
   return check;
 }
 
+bool // Seta para que o símbolo do comando EXTERN se torne de tipo diferente
+SymbolTable::set_symbol_extern(std::string name) {
+  if ( !this->checkSymbol(name) )
+    this->insertSymbol(name, 0);
+
+  int size = this->symbol.size();
+  for (int i = 0; i < size; i++) {
+    if (this->symbol[i]->name.compare(name) == 0)
+    {
+      this->symbol[i]->type = TypeSymbol::externCall;
+      this->symbol[i]->location.push_back(this->location_counter);
+      return true;
+    }
+  }
+  return false;
+}
+
 // Serve pra guardar informações da utilização do símbolo
 // útil para o linker
 bool
@@ -131,21 +148,36 @@ SymbolTable::getTableSymbols() {
   int size = this->symbol.size();
 
   for (int i = 0; i < size; i++) {
+    if (this->symbol[i]->name.compare("IO") == 0 || this->symbol[i]->type == TypeSymbol::externCall) continue;
     ret << this->symbol[i]->name;
     symbol[i]->name.size() < 7 ? ret << "\t\t" : ret << "\t";
-    ret << std::hex <<  this->symbol[i]->value;
+    ret << std::hex << "0x" << this->symbol[i]->value;
 
     int size = symbol[i]->location.size();
     for (int j = 0; j < size; j++) // Insere todas as localizações
-      ret << "\t" << symbol[i]->location[j];
+      ret << "\t0x" << symbol[i]->location[j];
 
     ret << std::endl;
   }
 
+  ret << "EXTERN:" << std::endl;
+  // Agora os símbolos externos
+  for (int i = 0; i < size; i++) {
+    if (this->symbol[i]->type != TypeSymbol::externCall) continue;
+    ret << this->symbol[i]->name;
+    symbol[i]->name.size() < 7 ? ret << "\t\t" : ret << "\t";
+    ret << std::hex << "0x" << this->symbol[i]->value;
+
+    int size = symbol[i]->location.size();
+    for (int j = 0; j < size; j++) // Insere todas as localizações
+      ret << "\t0x" << symbol[i]->location[j];
+
+    ret << std::endl;
+  }
   return ret.str();
 }
 
-void
+void // imprime a tabela de símbolos utilizando make v
 SymbolTable::printSymbols() {
   std::string r = this->getTableSymbols();
   std::cout << "**************************" << std::endl;

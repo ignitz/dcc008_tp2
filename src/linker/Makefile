@@ -1,6 +1,6 @@
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
-BIN_NAME := montador
+BIN_NAME := linker
 # Compiler used
 CXX ?= g++
 # Extension of source files used in the project
@@ -199,17 +199,17 @@ about:
 	@./$(BIN_NAME)
 
 # Execute
-.PHONY: run
-run:
-	@./$(BIN_NAME) ../files/W2-1.a
-	@./$(BIN_NAME) tst/all.a -o tst/all.mif
-	@./$(BIN_NAME) tst/media.a -o tst/media.mif
-	@./$(BIN_NAME) tst/pa.a -o tst/pa.mif
+# .PHONY: run
+# run:
+# 	@./$(BIN_NAME) ../files/W2-1.a
+# 	@./$(BIN_NAME) tst/all.a -o tst/all.mif
+# 	@./$(BIN_NAME) tst/media.a -o tst/media.mif
+# 	@./$(BIN_NAME) tst/pa.a -o tst/pa.mif
 
 # Execute Verbose
-.PHONY: v
-v:
-	@./$(BIN_NAME) ../files/W2-1.a -v
+# .PHONY: v
+# v:
+# 	@./$(BIN_NAME) ../files/W2-1.a -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)

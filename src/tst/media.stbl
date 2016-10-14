@@ -1,2 +1,3 @@
-_MEDIA		14	a
-IO		fe
+Size: 0x26
+_MEDIA		0x14	0xa
+EXTERN:

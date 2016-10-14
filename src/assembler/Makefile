@@ -208,7 +208,8 @@ run:
 # Execute Verbose
 .PHONY: v
 v:
-	@./$(BIN_NAME) ../tst/pa.a -o ../tst/pa.mif -v
+	# @./$(BIN_NAME) ../tst/pa.a -o ../tst/pa.mif -v
+	@./$(BIN_NAME) ../tst/all.a -o ../tst/all.mif -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)

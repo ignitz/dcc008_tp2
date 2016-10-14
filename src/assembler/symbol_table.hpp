@@ -8,7 +8,7 @@
 #include <vector>
 #include <sstream>      // std::ostringstream
 
-enum TypeSymbol {label, variable};
+enum TypeSymbol {label, variable, externCall};
 
 /*
  * Elemento contendo o Símbolo com seu ID, símbolo e posicao
@@ -39,6 +39,7 @@ public:
   bool insertSymbol( std::string , int );
   bool insertSymbol( std::string , int , std::string );
   bool checkSymbol( std::string );
+  bool set_symbol_extern( std::string );
 
   /*
    * Adiciona memórias com o tamanho em bytes

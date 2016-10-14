@@ -53,6 +53,8 @@ pass_two(std::ifstream& file, std::fstream& objeto, TableOpcode& table, std::str
   output += END_MIF;
   objeto << output;
 
-  fTabela << table.getTableSymbols();  
+  // Grava a tabela de símbolos em um arquivo
+  fTabela << "Size: 0x" << int_to_hex(table.location_counter - 1) << std::endl;
+  fTabela << table.getTableSymbols();
   fTabela.close();
 } // end passtwo

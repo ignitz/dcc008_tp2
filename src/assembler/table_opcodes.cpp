@@ -29,6 +29,9 @@
 #define SEQ       "seq",      25
 #define JMPP      "jmpp",     26
 
+// Adicionado para o linker
+#define EXTERN    "extern",   27
+
 Opcode::Opcode(std::string name, int value) {
   this->name = name;
   this->value = value;
@@ -257,6 +260,12 @@ TableOpcode::get_instruction(std::vector<std::string> fields) {
         exit(EXIT_FAILURE);
       }
       break;
+    case 27: // EXTERN      "extern",     special
+      binary = 17;
+      binary <<= 11;
+      binary |= (0) & 0xFF; // Zera o posicionamento para o linker
+      this->set_symbol_extern(fields[1]); // seta o type para extern
+      break;
   }
   return binary;
 }
@@ -290,4 +299,5 @@ TableOpcode::TableOpcode() {
   this->opcode.push_back(new Opcode( SGT ));
   this->opcode.push_back(new Opcode( SEQ ));
   this->opcode.push_back(new Opcode( JMPP ));
+  this->opcode.push_back(new Opcode( EXTERN ));
 }
