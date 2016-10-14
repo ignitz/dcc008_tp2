@@ -108,15 +108,28 @@ SymbolTable::redefine(int location_counter) {
 }
 
 
+std::string
+SymbolTable::getTableSymbols() {
+  std::ostringstream ret;
+
+  int size = this->symbol.size();
+
+  // ret << std::hex << std::setfill('0') << std::setw(2) << (upper_case ? std::uppercase : std::nouppercase) << (int)s[i];
+
+  for (int i = 0; i < size; i++) {
+    ret << this->symbol.at(i)->name;
+    symbol.at(i)->name.size() < 7 ? ret << "\t\t" : ret << "\t";
+    ret << std::hex <<  this->symbol.at(i)->value << std::endl;
+  }
+
+  return ret.str();
+}
+
 void
 SymbolTable::printSymbols() {
-  int size = this->symbol.size();
+  std::string r = this->getTableSymbols();
   std::cout << "**************************" << std::endl;
   std::cout << "Symbol Table:" << std::endl;
-  for (int i = 0; i < size; i++) {
-    std::cout << this->symbol.at(i)->name;
-    symbol.at(i)->name.size() < 7 ? std::cout << "\t\t" : std::cout << "\t";
-    std::cout << std::hex << this->symbol.at(i)->value << std::endl;
-  }
+  std::cout << r;
   std::cout << "**************************" << std::endl;
 }

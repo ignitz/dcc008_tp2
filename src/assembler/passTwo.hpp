@@ -10,5 +10,5 @@
 #include "table_opcodes.hpp"
 #include "util.hpp"
 
-void pass_two( std::ifstream& , std::fstream& , TableOpcode& );
+void pass_two( std::ifstream& , std::fstream& , TableOpcode&, std::string );
 #endif

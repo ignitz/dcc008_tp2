@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <string>
 #include <deque>
+#include <sstream>      // std::ostringstream
 
 enum TypeSymbol {label, variable};
 
@@ -41,6 +42,11 @@ public:
    * Adiciona memórias com o tamanho em bytes
    */
   bool redefine( int );
+
+  /*
+   * Retorna String contendo a tabela de símbolos
+   */
+  std::string getTableSymbols();
 
   void printSymbols();
 };

@@ -7,10 +7,21 @@
 // don't forget END;
 
 void
-pass_two(std::ifstream& file, std::fstream& objeto, TableOpcode& table) {
+pass_two(std::ifstream& file, std::fstream& objeto, TableOpcode& table, std::string sSaida) {
   bool bVerbose = table.verbose;
   using namespace std;
   if (bVerbose) cout << "*********************************\nDEBUG: Iniciando Pass_Two" << endl;
+
+  std::string sSaidaTbl;
+
+  sSaidaTbl = sSaida.substr(0, sSaida.find_last_of(".mif") - 3); // Retira extensão
+  sSaidaTbl += ".stbl"; // Adiciona extensão pro símbolo
+
+  fstream fTabela(sSaidaTbl, ios::out | ios::in | ios::trunc);
+  if (!fTabela.is_open()) {
+		cout << "Erro ao tentar abrir o arquivo " << sSaidaTbl << endl;
+		exit(EXIT_FAILURE);
+	}
 
   file.clear();
 	file.seekg(0, file.beg); // Posiciona no inicio do arquivo novamente
@@ -41,4 +52,7 @@ pass_two(std::ifstream& file, std::fstream& objeto, TableOpcode& table) {
   output += std::string("[" + int_to_hex(table.location_counter++) + "..FF]:  00000000;\n");
   output += END_MIF;
   objeto << output;
+
+  fTabela << table.getTableSymbols();  
+  fTabela.close();
 } // end passtwo

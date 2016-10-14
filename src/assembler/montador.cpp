@@ -40,7 +40,11 @@ main(int argc, char *argv[])
 	}
 
 	if(bSaida)
-		sSaida = "tst/exec.mif"; // Nome padrão para geracao de executavel
+		sSaida = "../tst/exec.mif"; // Nome padrão para geracao de executavel
+
+	// Completa com .mif se não foi colocado nos argumentos
+	if (sSaida.substr(sSaida.find_last_of("."), sSaida.size()).compare(".mif") != 0)
+		sSaida += ".mif";
 
 	ifstream fEntrada(sEntrada, ios::in);
 	fstream fObjeto(sSaida, ios::out | ios::in | ios::trunc);
@@ -55,7 +59,7 @@ main(int argc, char *argv[])
 	TableOpcode table;  // inicialização geral
 	table.verbose = bVerbose;
 	pass_one(fEntrada, table);
-	pass_two(fEntrada, fObjeto, table);
+	pass_two(fEntrada, fObjeto, table, sSaida);
 
 	fEntrada.close();
 	fObjeto.close();
