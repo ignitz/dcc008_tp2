@@ -11,12 +11,15 @@
 
 class Linker {
 private:
+  bool bVerbose;
   int iNumArgs;
-  Programa output;
-  std::vector<Programa> modulos;
+  Programa* output;
+  Programa* mainProg;
 public:
+  std::vector<Programa*> modulos;
   /* Construtor */
-  Linker ();
+  Linker ( std::vector<std::string> );
+  Linker ( std::vector<std::string> , bool );
   /* Desconstrutor */
   virtual ~Linker ();
 

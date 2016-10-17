@@ -18,15 +18,25 @@ int main(int argc, char const *argv[]) {
     exit(EXIT_SUCCESS);
   }
 
+  bool bVerbose = false;
   std::vector<std::string> sArgs;
   for (auto i = 1; i < argc; i++) {
-    if (argv[i][0] != '-')
+    if (argv[i][0] != '-') {
       sArgs.push_back(argv[i]);
+    }
+    else if ( std::string(argv[i]).compare("-v") == 0) {
+      bVerbose = true;
+    }
+    else { // É uma cilada Bino, não ter argumento válido
+      std::cerr << "Comando " << argv[i] << "Inválido!" << std::endl;
+      exit(EXIT_FAILURE);
+    }
   }
 
-  // TODO Adicionar verbose
-  // Pensar em um tipo de classe e criar um construtor
-  Linker linker();
+  Linker linker(sArgs, bVerbose); // Inicia o linkador com os programas
+  for(auto const& value: linker.modulos) {
+    std::cout << value->getName() << std::endl;
+  }
 
   return 0;
 }

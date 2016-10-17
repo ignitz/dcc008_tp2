@@ -30,7 +30,7 @@
 #define JMPP      "jmpp",     26
 
 // Adicionado para o linker
-#define EXTERN    "extern",   27
+#define EXTERN    ".extern",   27
 
 Opcode::Opcode(std::string name, int value) {
   this->name = name;

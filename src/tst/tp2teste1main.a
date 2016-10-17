@@ -1,0 +1,4 @@
+LOAD R0 IO ;IO é o endereço 254 da memória principal
+LOAD R1 IO ;Carregar de IO pede um valor ao usuário no console
+.extern MULTIPLICA
+STORE IO R0
