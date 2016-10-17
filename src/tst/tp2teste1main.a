@@ -1,4 +1,4 @@
-LOAD R0 IO ;IO é o endereço 254 da memória principal
-LOAD R1 IO ;Carregar de IO pede um valor ao usuário no console
+load R0 IO ;IO eh o endereço 254 da memoria principal
+load R1 IO ;Carregar de IO pede um valor ao usuario no console
 .extern MULTIPLICA
-STORE IO R0
+store IO R0

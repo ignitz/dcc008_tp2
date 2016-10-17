@@ -209,7 +209,7 @@ about:
 # Execute Verbose
 .PHONY: v
 v:
-	@./$(BIN_NAME) ../tst/programa.mif ../tst/pa -v
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste1main ../tst/tp2teste1calc -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)

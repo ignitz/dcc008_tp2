@@ -22,7 +22,7 @@ pass_one(std::ifstream& file, TableOpcode& table) {
 
 		if (fields[0].back() == ':') { // Insere o simbolo na tabela
       // Prefixo "_" eh label
-      store_location = (fields[0].front() == '_') ? table.location_counter : 0;
+      store_location = table.location_counter;
 			fields[0].pop_back();
 
 			if (table.checkSymbol(fields[0])) { // Verifica se label ja existe
@@ -30,7 +30,10 @@ pass_one(std::ifstream& file, TableOpcode& table) {
 				exit(EXIT_FAILURE);
 			}
 			else {
-				table.insertSymbol(fields[0], store_location, fields[2]);
+				if (fields[1].compare(".data") == 0)
+					table.insertSymbol(fields[0], store_location, fields[2]);
+				else
+					table.insertSymbol(fields[0], store_location);
 			}
 
 			fields[0].push_back(':');
