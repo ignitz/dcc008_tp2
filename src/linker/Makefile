@@ -211,6 +211,11 @@ about:
 v:
 	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste1main ../tst/tp2teste1calc -v
 
+.PHONY: ass
+ass:
+	../assembler/montador tp2teste1main.a -o tp2teste1main.mif -v
+	../assembler/montador tp2teste1calc.a -o tp2teste1calc.mif -v
+
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)
 	@echo "Making symlink: $(BIN_NAME) -> $<"

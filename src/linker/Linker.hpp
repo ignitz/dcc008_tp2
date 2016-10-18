@@ -13,10 +13,12 @@ class Linker {
 private:
   bool bVerbose;
   int iNumArgs;
+public:
   Programa* output;
   Programa* mainProg;
-public:
   std::vector<Programa*> modulos;
+  void printAllData();
+
   /* Construtor */
   Linker ( std::vector<std::string> );
   Linker ( std::vector<std::string> , bool );

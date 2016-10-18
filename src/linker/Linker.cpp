@@ -30,3 +30,15 @@ Linker::~Linker() {
     delete modulo;
   }
 }
+
+void Linker::printAllData () { // Imprime todo o conteúdo do linkador
+  std::cout << "Executando printAllData do Linker" << std::endl;
+  std::cout << "- Arquivo de saída MIF" << std::endl;
+  this->output->printAllData();
+  std::cout << "- Main" << std::endl;
+  this->mainProg->printAllData();
+  std::cout << "- Módulos" << std::endl;
+  for (auto const& modulo : this->modulos) {
+    modulo->printAllData();
+  }
+}

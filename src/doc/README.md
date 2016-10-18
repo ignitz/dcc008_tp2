@@ -17,7 +17,10 @@ O trabalho consiste em criar um *linker* para o montador Wombat2.
   - Inseri o comando para EXTERN (chamada de função call para um label externo). Não testei, tem que testar, não quero testar...
     - Fiz um teste bobo no **all.a**.
 - Passos para o sucesso
-  - Abrir todos os módulos dicamicamente.
+  - Abrir todos os módulos dicamicamente ✔.
   - Atualizar tabelas dos símbolos
   - Encontrar todos os externs e atualizar na table symbol global.
   - Encontrar todas as ocorrências dos símbolos e atualizá-las.
+
+### Referência
+- http://www.boost.org/doc/libs/1_61_0/libs/algorithm/doc/html/index.html

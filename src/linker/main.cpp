@@ -34,9 +34,9 @@ int main(int argc, char const *argv[]) {
   }
 
   Linker linker(sArgs, bVerbose); // Inicia o linkador com os programas
-  for(auto const& value: linker.modulos) {
-    std::cout << value->getName() << std::endl;
-  }
+
+  if (bVerbose)
+    linker.printAllData();
 
   return 0;
 }
