@@ -31,7 +31,8 @@ Linker::~Linker() {
   }
 }
 
-void Linker::printAllData () { // Imprime todo o conteúdo do linkador
+void
+Linker::printAllData () { // Imprime todo o conteúdo do linkador
   std::cout << "Executando printAllData do Linker" << std::endl;
   std::cout << "- Arquivo de saída MIF" << std::endl;
   this->output->printAllData();

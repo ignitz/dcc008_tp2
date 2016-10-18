@@ -199,12 +199,9 @@ about:
 	@./$(BIN_NAME)
 
 # Execute
-# .PHONY: run
-# run:
-# 	@./$(BIN_NAME) ../files/W2-1.a
-# 	@./$(BIN_NAME) tst/all.a -o tst/all.mif
-# 	@./$(BIN_NAME) tst/media.a -o tst/media.mif
-# 	@./$(BIN_NAME) tst/pa.a -o tst/pa.mif
+.PHONY: run
+run:
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste1main ../tst/tp2teste1calc
 
 # Execute Verbose
 .PHONY: v

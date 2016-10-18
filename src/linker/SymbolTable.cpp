@@ -1,19 +1,53 @@
 #include "SymbolTable.hpp"
 
-/**************************
- * Symbol
- */
 Symbol::Symbol(std::string name) {
+  this->valueInit = false;
   this->name = name;
 }
 
-/**************************
- * SymbolTable
- */
 SymbolTable::SymbolTable() {
   // Tá tudo bem Entei
 }
 
+bool
+SymbolTable::insertValue(int value) {
+  if ( this->symbol.size() <= 0 ) return false;
+  if ( this->symbol[this->symbol.size() - 1]->valueInit ) {
+    this->symbol[this->symbol.size() - 1]->location.push_back(value);
+  }
+
+  else {
+    this->symbol[this->symbol.size() - 1]->value = value;
+    this->symbol[this->symbol.size() - 1]->valueInit = true;
+  }
+  return true;
+}
+
+bool
+SymbolTable::checkSymbol(std::string name) {
+  for (auto const& symbol : this->symbol)
+  if (symbol->name.compare(name) == 0) return true;
+  return false;
+}
+
+bool
+SymbolTable::insertSymbol( std::string name ) {
+  if ( this->checkSymbol( name ) ) // Verifica se ja tem na tabela
+  return false;
+  this->symbol.push_back( new Symbol( name ) );
+  return true;
+}
+
+void // imprime a tabela de símbolos utilizando make v
+SymbolTable::printSymbols() {
+  for ( auto const& symbol : this->symbol ) {
+    std::cout << symbol->name << ":" << std::endl;
+    std::cout << symbol->value << "\t";
+    for ( auto const& value : symbol->location )
+      std::cout << value << "\t";
+    std::cout << std::endl;
+  }
+}
 // int
 // SymbolTable::get_symbol_value(int i) {
 //   if (i >= 1 && i <= (int) this->symbol.size())
@@ -39,36 +73,7 @@ SymbolTable::SymbolTable() {
 //   return -1;
 // }
 //
-// bool
-// SymbolTable::checkSymbol(std::string name) {
-//   int size = this->symbol.size();
-//   for (int i = 0; i < size; i++)
-//     if (this->symbol[i]->name.compare(name) == 0) return true;
-//   return false;
-// }
-//
-// bool
-// SymbolTable::insertSymbol(std::string name, int value) {
-//   if (this->checkSymbol(name)) // Verifica se ja tem na tabela
-//     return false;
-//   if (name.front() == '_')
-//     this->symbol.push_back(new Symbol(name, value, TypeSymbol::label));
-//   else
-//     this->symbol.push_back(new Symbol(name, value));
-//   return true;
-// }
-//
-// bool // Especial para .data
-// SymbolTable::insertSymbol(std::string name, int value, std::string num_bytes) {
-//   if (this->checkSymbol(name))
-//     return false;
-//   if (name.front() == '_')
-//     this->symbol.push_back(new Symbol(name, value, TypeSymbol::label));
-//   else
-//     this->symbol.push_back(new Symbol(name, 0, num_bytes));
-//   return true;
-// }
-//
+
 // bool
 // SymbolTable::redefine(int location_counter) {
 //   bool check = false;
@@ -144,13 +149,4 @@ SymbolTable::SymbolTable() {
 //     ret << std::endl;
 //   }
 //   return ret.str();
-// }
-
-// void // imprime a tabela de símbolos utilizando make v
-// SymbolTable::printSymbols() {
-//   std::string r = this->getTableSymbols();
-//   std::cout << "**************************" << std::endl;
-//   std::cout << "Symbol Table:" << std::endl;
-//   std::cout << r;
-//   std::cout << "**************************" << std::endl;
 // }

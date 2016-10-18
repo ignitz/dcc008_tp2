@@ -16,7 +16,10 @@ enum TypeSymbol {label, variable, externCall};
 class Symbol {
 public:
   std::string name;
+  bool valueInit; // Indica se o valor foi iniciado
+  int value; // Valor representado na tabela
   std::vector<int> location; // Grava todas as posições de ocorrencia
+
   Symbol( std::string );
 };
 
@@ -25,14 +28,17 @@ private:
   std::vector<Symbol*> symbol;
 public:
   bool verbose;
-  // int get_symbol_value( std::string );
-  // int get_symbol_value( int );
-  // bool insertSymbol( std::string , int );
-  // bool insertSymbol( std::string , int , std::string );
-  // bool checkSymbol( std::string );
-  // bool set_symbol_extern( std::string );
 
   SymbolTable();
+
+  // int get_symbol_value( std::string );
+  // int get_symbol_value( int );
+  bool insertSymbol( std::string );
+  bool insertValue( int );
+  // bool insertSymbol( std::string , int , std::string );
+  bool checkSymbol( std::string );
+  void printSymbols( );
+
 
 };
 

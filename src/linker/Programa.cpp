@@ -34,21 +34,25 @@ Programa::~Programa () {
   this->fileStbl.close();
 }
 
-std::string Programa::getName () {
+std::string
+Programa::getName () {
   return this->name;
 }
 
-bool Programa::setName ( std::string name ) {
+bool
+Programa::setName ( std::string name ) {
   this->name = name;
   return true; // TODO Quando pode dar false?
 }
 
-bool Programa::setVerbose ( bool bVerbose ) {
+bool
+Programa::setVerbose ( bool bVerbose ) {
   this->bVerbose = bVerbose;
   return this->bVerbose;
 }
 
-bool Programa::readTable () {
+bool
+Programa::readTable () {
 
   if (!this->fileStbl.is_open()) { // Verifica se o arquivo está aberto.
     std::cerr << "Erro em abrir o arquivo " << this->getName() << std::endl;
@@ -57,59 +61,83 @@ bool Programa::readTable () {
 
   std::string line;
   std::vector<std::string> fields;
+  std::vector<std::string> aux;
   int state = 0;
 
   this->fileStbl.seekg(0, this->fileStbl.beg);
   while (getline(this->fileStbl, line)) {
     // Separa a linha em tokens
     boost::split(fields, line, boost::is_any_of("\t "), boost::token_compress_on);
-    // Testando o iterador, acabei de aprender xD
-    // É semelhante ao foreach no PHP
-    for (auto const& field : fields) {
-      switch (state) {
-        case 0:
-          if (field.compare("Size:") == 0)
+
+    switch (state) {
+      case 0: // Size
+        if (fields.size() == 2) {
+          if (fields[0].compare("Size:") == 0) {
+            std::stoi (fields[1], nullptr, 0);
+            state++;
+          }
+          else { // Se encontrar um erro entra aqui
+            std::cerr << "Error em ler Size: " << std::endl;
+            for (auto const& field : fields)
+              std::cerr << field << std::endl;
+            return false;
+          }
+        }
+        else { // Size em formato inválido
+          std::cerr << "Size não contém dois operandos: " << std::endl;
+          for (auto const& field : fields)
+            std::cerr << field << std::endl;
+          return false;
+        }
+      break;
+
+      case 1: // Símbolos locais
+      case 2: // Extern
+        if ( fields.size() >= 2 ) { // Tem que ter o valor mais pelo menos uma localização
+          state == 1 ? this->tableLocal.insertSymbol ( fields[0] ) : this->tableExtern.insertSymbol ( fields[0] );
+          aux = fields;
+          aux.erase(aux.begin());
+          for (auto const& field : aux) {
+            if ( field.substr(0, 2).compare("0x") == 0 ) {
+              state == 1 ? this->tableLocal.insertValue( std::stoi (field, nullptr, 0) ) : this->tableExtern.insertValue( std::stoi (field, nullptr, 0) );
+            }
+            else { // Se não reconhecer como hexadecimal
+              std::cerr << "Formato do " << field << " é hexadecimal inválido" << std::endl;
+              return false;
+            }
+          }
+        }
+        else if ( fields.empty() ) { // Linha vazia
+          // Do nothing
+          continue;
+        }
+        else if ( fields[0].compare("EXTERN:") == 0 ) {
           state++;
-        break;
+        }
+        else { // Formato inválido
+          std::cerr << "Símbolo em formato inválido: " << std::endl;
+          for (auto const& field : fields)
+            std::cerr << field << std::endl;
+          return false;
+        }
+      break;
 
-        case 1: // Lê o tamanho do módulo
-          if ( field.substr(0, 2).compare("0x") == 0 ) {
-            this->size = std::stoi ( field, nullptr, 0 );
-            state++;
-          }
-          else {
-            std::cerr <<
-            "Erro em ler a tabela no campo " << field << "." << std::endl;
-            std::cerr << "tentando continuar a leitura" << std::endl;
-          }
-        break;
+      default: // Caso ocorra algo inexperado
+        std::cerr << "Duendes alteraram a variável state para " <<
+            state << "." << std::endl;
+        return false;
+      break;
+    } // end Switch
+  } // end While
 
-        case 2: // Lendo tabelas de símbolos locais
-          if ( field.compare("EXTERN:") == 0 ) { // Passa para o próximo estado
-            state++;
-          }
-          else { // Aqui vou inserir os labels locais
-            // TODO
-          }
-        break;
-
-        case 3: // Lendo tabelas EXTERN
-          // TODO
-          // Aqui vou inserir os labels globais
-        break;
-
-        default: // Caso ocorra algo inexperado
-          std::cerr << "Duendes alteraram a variável state para " <<
-              state << "." << std::endl;
-        break;
-      } // end switch
-    } // end for
-  }
-
-  return state == 3 ? true : false;
+  return state == 2 ? true : false;
 }
 
 void Programa::printAllData () { // Imprime todo o conteúdo do módulo
-  std::cout << "Nome:" << this->getName() << std::endl;
-  std::cout << "----------------" << std::endl;
+  std::cout << "Programa:" << this->getName() << std::endl;
+  std::cout << "--- Local ----" << std::endl;
+  this->tableLocal.printSymbols();
+  std::cout << "--- Extern ---" << std::endl;
+  this->tableExtern.printSymbols();
+  std::cout << "================" << std::endl;
 }

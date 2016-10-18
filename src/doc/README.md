@@ -18,6 +18,7 @@ O trabalho consiste em criar um *linker* para o montador Wombat2.
     - Fiz um teste bobo no **all.a**.
 - Passos para o sucesso
   - Abrir todos os módulos dicamicamente ✔.
+  - Ler a tabela de símbolos ✔.
   - Atualizar tabelas dos símbolos
   - Encontrar todos os externs e atualizar na table symbol global.
   - Encontrar todas as ocorrências dos símbolos e atualizá-las.

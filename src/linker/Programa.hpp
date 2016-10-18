@@ -28,6 +28,8 @@ private:
   std::fstream fileMif; // Arquivo Mif
   std::fstream fileStbl; // Arquivo Symbol Table
   int size; // Tamanho do módulo
+  SymbolTable tableLocal; // Para as variáveis locais
+  SymbolTable tableExtern; // Para as variáveis globais
 public:
   bool bVerbose;
 
@@ -39,7 +41,6 @@ public:
   bool setName ( std::string );
   bool setVerbose ( bool );
   bool readTable ();
-  // std::string getFile( std::string );
-  // bool setFile( std::string );
-  void printAllData ();
+
+  void printAllData (); // DEBUG
 };
