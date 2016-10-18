@@ -5,7 +5,7 @@
         add R0 R1
         subtract R0 R1
         multiply R0 R1
-        divide R0 R1
+_mini:  divide R0 R1
         jump _teste
         jmpz R1 _teste
         jmpn R1 _teste
@@ -15,7 +15,7 @@
         store R1 R0
         loadc R1 10
         clear R1
-        moveSp 4
+_loop:    moveSp 4
         slt R0 R1 R2
         call _teste
         loadSp R1 2

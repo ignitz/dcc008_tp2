@@ -11,6 +11,8 @@
 
 #include "Programa.hpp"
 
+#include "util.hpp"
+
 class Linker {
 private:
   bool bVerbose;

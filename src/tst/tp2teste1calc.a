@@ -1,2 +1,2 @@
-MULTIPLICA: mul R0 R1
+MULTIPLICA: multiply R0 R1
         ret

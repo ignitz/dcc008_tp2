@@ -210,8 +210,8 @@ v:
 
 .PHONY: ass
 ass:
-	../assembler/montador tp2teste1main.a -o tp2teste1main.mif -v
-	../assembler/montador tp2teste1calc.a -o tp2teste1calc.mif -v
+	../assembler/montador ../tst/tp2teste1main.a -o ../tst/tp2teste1main.mif -v
+	../assembler/montador ../tst/tp2teste1calc.a -o ../tst/tp2teste1calc.mif -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)

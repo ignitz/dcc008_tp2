@@ -1,5 +1,9 @@
 #include "Linker.hpp"
 
+#define HEAD_MIF "DEPTH = 256;\nWIDTH = 8;\nADDRESS_RADIX = HEX;\nDATA_RADIX = BIN;\nCONTENT\nBEGIN\n\n"
+#define END_MIF "END;\n"
+
+
 Linker::Linker( std::vector<std::string> sArgs ) {
   this->bVerbose = false;
   this->iNumArgs = sArgs.size();
@@ -44,12 +48,36 @@ Linker::~Linker() {
 
 void
 Linker::appendOutput() {
+
+  this->output->writeFileMif(HEAD_MIF);
+
   auto fields = this->mainProg->getFileMif();
-  this->output->writeFileMif(fields[0][0]);
   for (auto& linefields : fields) {
-    for (auto& field : linefields)
-      this->output->writeFileMif(field);
+    if (linefields.size() >= 2) {
+      this->output->writeFileMif(linefields[0] + "        :  ");
+      this->output->writeFileMif(linefields[1] + ";\n");
+    }
   }
+
+  int iMove = this->mainProg->getSize();
+  if (iMove % 2 != 0) iMove++; // Alinhamento par bytes
+  std::string address;
+
+  for (auto& modulo : this->modulos) {
+    fields = modulo->getFileMif();
+    for (size_t i = 0; i < fields.size(); i++) {
+      if (fields[i].size() >= 2) {
+        // Translada e converte pra hex
+        address = int_to_hex(std::stoi (fields[i][0].insert(0, "0x"), nullptr, 0) + iMove);
+        this->output->writeFileMif(
+          address + "        :  " + fields[i][1] + ";\n");
+      }
+    }
+    iMove += modulo->getSize();
+    if (iMove % 2 != 0) iMove++; // Alinhamento par bytes
+  }
+
+  this->output->writeFileMif(END_MIF);
 }
 
 void
