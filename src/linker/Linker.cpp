@@ -31,17 +31,25 @@ Linker::Linker( std::vector<std::string> sArgs, bool bVerbose ) : Linker(sArgs) 
 }
 
 Linker::~Linker() {
+  if (this->bVerbose) std::cout << "Deletando mainProg." << std::endl;
+  delete mainProg;
+  if (this->bVerbose) std::cout << "Deletando output." << std::endl;
+  delete output;
+  if (this->bVerbose) std::cout << "Deletando módulos:" << std::endl;
   for(auto const& modulo: this->modulos) {
+    if (this->bVerbose) std::cout << modulo->getName() << std::endl;
     delete modulo;
   }
 }
 
 void
 Linker::appendOutput() {
-  std::string line;
-  getline(this->mainProg, line);
-
-  std::cout << line << std::endl;
+  auto fields = this->mainProg->getFileMif();
+  this->output->writeFileMif(fields[0][0]);
+  for (auto& linefields : fields) {
+    for (auto& field : linefields)
+      this->output->writeFileMif(field);
+  }
 }
 
 void

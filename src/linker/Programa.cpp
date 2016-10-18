@@ -2,8 +2,17 @@
 
 Programa::Programa ( std::string name, bool bWrite ) {
   std::string modMif, modSbtl;
-  modMif  = name + ".mif";
-  modSbtl = name + ".stbl";
+
+  // Verifica se já tem a extensão mif
+  if (name.substr(name.find_last_of("."), name.size()).compare(".mif") == 0) {
+    modMif  = name;
+    modSbtl = name.substr(0, name.find_last_of(".")) + ".stbl";
+  }
+  else {
+    modMif  = name + ".mif";
+    modSbtl = name + ".stbl";
+  }
+
   this->setName(name);
   this->size = 0;
 
@@ -62,6 +71,43 @@ Programa::setVerbose ( bool bVerbose ) {
   this->tableLocal.setVerbose(bVerbose);
   this->tableExtern.setVerbose(bVerbose);
   return this->bVerbose;
+}
+
+std::vector<std::vector<std::string>>
+Programa::getFileMif() {
+  std::string line;
+  std::vector<std::string> fields;
+  std::vector<std::vector<std::string>> r;
+  int state = 0;
+
+  while(std::getline(this->fileMif, line)) {
+    if (line.compare("BEGIN") == 0)
+      state++;
+    if (line.compare("END") == 0)
+      break;
+
+    if ( (state == 1) && (line.size() >= 8) ) {
+      if (line[0] == '[') break;
+      boost::split(fields, line, boost::is_any_of("\t :;"), boost::token_compress_on);
+      for (size_t i = 0; i < fields.size(); i++)
+        if (fields[i].size() == 0) fields.erase(fields.begin() + i);
+      r.push_back(fields);
+    }
+  }
+
+  if (state == 1) {
+    return r;
+  }
+  else {
+    std::cerr << "Erro na leitura do arquivo MIF " <<
+        this->getName() << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
+void
+Programa::writeFileMif( std::string buffer ) {
+  this->fileMif << buffer;
 }
 
 bool

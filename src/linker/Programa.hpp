@@ -45,6 +45,10 @@ public:
   int getSize();
   int setSize( int );
 
+  std::vector<
+      std::vector< std::string > > getFileMif();
+  void writeFileMif( std::string );
+
   bool setVerbose ( bool );
   bool readTable ();
 
