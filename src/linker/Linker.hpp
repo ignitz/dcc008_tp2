@@ -6,6 +6,8 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <iomanip>
+#include <fstream>
 
 #include "Programa.hpp"
 
@@ -17,7 +19,10 @@ public:
   Programa* output;
   Programa* mainProg;
   std::vector<Programa*> modulos;
-  void printAllData();
+
+  void appendOutput (); // Apenda arquivos MIF
+  void updateAddress (); // Desloca o posicionamento absoluto nas tabelas
+  void printAllData ();
 
   /* Construtor */
   Linker ( std::vector<std::string> );

@@ -45,9 +45,22 @@ Programa::setName ( std::string name ) {
   return true; // TODO Quando pode dar false?
 }
 
+int
+Programa::getSize() {
+  return this->size;
+}
+
+int
+Programa::setSize(int value) {
+  this->size = value;
+  return value;
+}
+
 bool
 Programa::setVerbose ( bool bVerbose ) {
   this->bVerbose = bVerbose;
+  this->tableLocal.setVerbose(bVerbose);
+  this->tableExtern.setVerbose(bVerbose);
   return this->bVerbose;
 }
 
@@ -73,7 +86,7 @@ Programa::readTable () {
       case 0: // Size
         if (fields.size() == 2) {
           if (fields[0].compare("Size:") == 0) {
-            std::stoi (fields[1], nullptr, 0);
+            this->size = std::stoi (fields[1], nullptr, 0);
             state++;
           }
           else { // Se encontrar um erro entra aqui
@@ -133,8 +146,20 @@ Programa::readTable () {
   return state == 2 ? true : false;
 }
 
-void Programa::printAllData () { // Imprime todo o conteúdo do módulo
+void
+Programa::translatePositionLocal(int move) {
+  this->tableLocal.translateSymbol(move);
+}
+
+void
+Programa::translatePositionExtern(int move) {
+  // this->tableExtern.translateSymbol(move);
+}
+
+void
+Programa::printAllData () { // Imprime todo o conteúdo do módulo
   std::cout << "Programa:" << this->getName() << std::endl;
+  std::cout << "Size = " << this->size << std::endl;
   std::cout << "--- Local ----" << std::endl;
   this->tableLocal.printSymbols();
   std::cout << "--- Extern ---" << std::endl;

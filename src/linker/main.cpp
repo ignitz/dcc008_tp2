@@ -34,9 +34,11 @@ int main(int argc, char const *argv[]) {
   }
 
   Linker linker(sArgs, bVerbose); // Inicia o linkador com os programas
-
-  if (bVerbose)
-    linker.printAllData();
+  linker.appendOutput();
+  linker.updateAddress();
+  // - Atualizar tabelas dos símbolos
+  // - Encontrar todos os externs e atualizar na table symbol global.
+  // - Encontrar todas as ocorrências dos símbolos e atualizá-las.
 
   return 0;
 }

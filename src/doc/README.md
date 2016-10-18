@@ -16,12 +16,15 @@ O trabalho consiste em criar um *linker* para o montador Wombat2.
   - Ajuste para que o tamanho do programa sempre termine em um tamanho ímpar (ou par (depende da sua métrica)) **Isso farei no linkador**.
   - Inseri o comando para EXTERN (chamada de função call para um label externo). Não testei, tem que testar, não quero testar...
     - Fiz um teste bobo no **all.a**.
-- Passos para o sucesso
+- Criei uma classe SymbolTable semelhante ao do Assembler para o Linker.
+- Passos para o sucesso:
   - Abrir todos os módulos dicamicamente ✔.
   - Ler a tabela de símbolos ✔.
-  - Atualizar tabelas dos símbolos
+  - Atualizar tabelas dos símbolos ✔ (Mais ou menos)
   - Encontrar todos os externs e atualizar na table symbol global.
   - Encontrar todas as ocorrências dos símbolos e atualizá-las.
+
+> No montador vou tirar os headers e END para formar arquivos mif estilo .o e depois concatenar tudo pelo linker.
 
 ### Referência
 - http://www.boost.org/doc/libs/1_61_0/libs/algorithm/doc/html/index.html

@@ -1,3 +1,6 @@
+#ifndef _PROGRAMA_H_
+#define _PROGRAMA_H_
+
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -24,6 +27,7 @@
  */
 class Programa {
 private:
+  bool bVerbose;
   std::string name;
   std::fstream fileMif; // Arquivo Mif
   std::fstream fileStbl; // Arquivo Symbol Table
@@ -31,7 +35,6 @@ private:
   SymbolTable tableLocal; // Para as variáveis locais
   SymbolTable tableExtern; // Para as variáveis globais
 public:
-  bool bVerbose;
 
   Programa ( std::string , bool );
   Programa ( std::string );
@@ -39,8 +42,16 @@ public:
 
   std::string getName ();
   bool setName ( std::string );
+  int getSize();
+  int setSize( int );
+
   bool setVerbose ( bool );
   bool readTable ();
 
+  void translatePositionLocal( int );
+  void translatePositionExtern( int );
+
   void printAllData (); // DEBUG
 };
+
+#endif

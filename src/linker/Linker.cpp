@@ -18,16 +18,53 @@ Linker::Linker( std::vector<std::string> sArgs ) {
 
 Linker::Linker( std::vector<std::string> sArgs, bool bVerbose ) : Linker(sArgs) {
   this->bVerbose = bVerbose;
-  if (bVerbose) {
+  if (this->bVerbose) {
+    std::cout << "Setando verbose nos módulos" << std::endl;
+    this->output->setVerbose(bVerbose);
+    this->mainProg->setVerbose(bVerbose);
     for(auto const& modulo: this->modulos) {
       modulo->setVerbose(bVerbose);
     }
+    std::cout << "Imprimindo a tabela original (sem deslocamento):" << std::endl;
+    this->printAllData();
   }
 }
 
 Linker::~Linker() {
   for(auto const& modulo: this->modulos) {
     delete modulo;
+  }
+}
+
+void
+Linker::appendOutput() {
+  std::string line;
+  getline(this->mainProg, line);
+
+  std::cout << line << std::endl;
+}
+
+void
+Linker::updateAddress () {
+  if (this->mainProg->getSize() % 2 != 0) // Faz um alinhamento para par bytes
+    this->mainProg->setSize(this->mainProg->getSize() + 1);
+  int sumSize = this->mainProg->getSize();
+
+  for (auto const& modulo : this->modulos) {
+    if (modulo->getSize() % 2 != 0) // Faz um alinhamento para par bytes
+      modulo->setSize(modulo->getSize() + 1);
+    modulo->translatePositionLocal(sumSize);
+    sumSize += modulo->getSize();
+  }
+
+  // TODO Atualizar os extern todos
+  // Então, a ideia é procurar por todas as tabelas até achar e daí atualizar o valor correto
+
+  if (this->bVerbose) {
+    std::cout <<
+    std::endl <<
+    "Imprimindo as tabelas após as atualizações:" << std::endl;
+    this->printAllData();
   }
 }
 

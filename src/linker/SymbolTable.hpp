@@ -1,5 +1,5 @@
-#ifndef _SYMBOL_TABLE_
-#define _SYMBOL_TABLE_
+#ifndef _SYMBOLTABLE_H_
+#define _SYMBOLTABLE_H_
 
 #include <iostream>
 #include <cstdio>
@@ -15,6 +15,7 @@ enum TypeSymbol {label, variable, externCall};
  */
 class Symbol {
 public:
+  bool bVerbose;
   std::string name;
   bool valueInit; // Indica se o valor foi iniciado
   int value; // Valor representado na tabela
@@ -25,20 +26,17 @@ public:
 
 class SymbolTable {
 private:
+  bool bVerbose;
   std::vector<Symbol*> symbol;
 public:
-  bool verbose;
-
   SymbolTable();
 
-  // int get_symbol_value( std::string );
-  // int get_symbol_value( int );
+  void translateSymbol( int );
   bool insertSymbol( std::string );
   bool insertValue( int );
-  // bool insertSymbol( std::string , int , std::string );
   bool checkSymbol( std::string );
+  bool setVerbose( bool );
   void printSymbols( );
-
 
 };
 
