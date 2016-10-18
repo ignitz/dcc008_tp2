@@ -211,6 +211,28 @@ v:
 	# @./$(BIN_NAME) ../tst/pa.a -o ../tst/pa.mif -v
 	@./$(BIN_NAME) ../tst/all.a -o ../tst/all.mif -v
 
+# Testes enumerados
+.PHONY: 0
+0:
+	@./$(BIN_NAME) ../tst/tp2teste1calc.a -o ../tst/tp2teste1calc.mif -v
+
+.PHONY: 1
+1:
+	@./$(BIN_NAME) ../tst/tp2teste1main.a -o ../tst/tp2teste1main.mif -v
+
+.PHONY: 2
+2:
+	@./$(BIN_NAME) ../tst/media.a -o ../tst/media.mif -v
+
+.PHONY: 3
+3:
+	@./$(BIN_NAME) ../tst/pa.a -o ../tst/pa.mif -v
+
+.PHONY: 4
+4:
+	@./$(BIN_NAME) ../tst/tp2teste2calc.a -o ../tst/tp2teste2calc.mif -v
+	@./$(BIN_NAME) ../tst/tp2teste2main.a -o ../tst/tp2teste2main.mif -v
+
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)
 	@echo "Making symlink: $(BIN_NAME) -> $<"

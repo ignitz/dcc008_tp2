@@ -82,21 +82,16 @@ bool
 SymbolTable::insertSymbol(std::string name, int value) {
   if (this->checkSymbol(name)) // Verifica se ja tem na tabela
     return false;
-  if (name.front() == '_')
-    this->symbol.push_back(new Symbol(name, value, TypeSymbol::label));
-  else
-    this->symbol.push_back(new Symbol(name, value));
+  this->symbol.push_back(new Symbol(name, value, TypeSymbol::label));
   return true;
 }
 
 bool // Especial para .data
 SymbolTable::insertSymbol(std::string name, int value, std::string num_bytes) {
+  value = 0;
   if (this->checkSymbol(name))
     return false;
-  if (name.front() == '_')
-    this->symbol.push_back(new Symbol(name, value, TypeSymbol::label));
-  else
-    this->symbol.push_back(new Symbol(name, 0, num_bytes));
+  this->symbol.push_back(new Symbol(name, value, num_bytes));
   return true;
 }
 
@@ -105,7 +100,7 @@ SymbolTable::redefine(int location_counter) {
   bool check = false;
   int size = this->symbol.size();
   for (int i = 0; i < size; i++) {
-    if (this->symbol[i]->name.front() != '_') {
+    if (this->symbol[i]->type == variable) {
       this->symbol[i]->value = location_counter;
       location_counter += this->symbol[i]->num_bytes;
 

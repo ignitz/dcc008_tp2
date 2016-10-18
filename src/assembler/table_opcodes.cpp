@@ -96,33 +96,30 @@ TableOpcode::get_line_mif(std::vector<std::string> fields) {
   std::string r; // to return
   if (fields.size() == 0) return "";
 
-  if (fields[0].back() == ':' && fields[0].front() == '_')
-    fields.erase(fields.begin()); // Elimina label
-
   if (fields[0].back() == ':') {
-    // do .data
-    if (fields.size() >= 4 && fields[1].compare(".data") == 0) {
-      r += this->get_data(fields);
-    }
+
+    // Se for .data
+    if (fields.size() >= 4 && fields[1].compare(".data") == 0)
+      return this->get_data(fields);
+
+    // Ah, então é só um label
+    fields.erase(fields.begin()); // Elimina label
   }
-  else {
 
-    int binary = this->get_instruction(fields);
+  int binary = this->get_instruction(fields);
 
-    r += int_to_hex(this->location_counter);
-    r += "        :  ";
-    r += int_to_binary( (binary & 0xFF00) >> 8 ) + ";\n";
-    this->location_counter++;
-    r += int_to_hex(this->location_counter);
-    r += "        :  ";
-    r += int_to_binary( binary & 0x00FF ) + ";\n";
-    this->location_counter++;
+  r += int_to_hex(this->location_counter);
+  r += "        :  ";
+  r += int_to_binary( (binary & 0xFF00) >> 8 ) + ";\n";
+  this->location_counter++;
+  r += int_to_hex(this->location_counter);
+  r += "        :  ";
+  r += int_to_binary( binary & 0x00FF ) + ";\n";
+  this->location_counter++;
 
-    if (this->verbose) { // DEBUG
-      std::cout << int_to_binary( (binary & 0xFF00) >> 8 )
-        << int_to_binary( binary & 0x00FF ) << std::endl;
-    }
-
+  if (this->verbose) { // DEBUG
+    std::cout << int_to_binary( (binary & 0xFF00) >> 8 )
+      << int_to_binary( binary & 0x00FF ) << std::endl;
   }
 
   if (this->verbose) std::cout << r; // DEBUG
