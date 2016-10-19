@@ -22,8 +22,12 @@ public:
   Programa* mainProg;
   std::vector<Programa*> modulos;
 
-  void appendOutput (); // Apenda arquivos MIF
+  void appendFiles (); // Apenda arquivos MIF
   void updateAddress (); // Desloca o posicionamento absoluto nas tabelas
+
+  void // Insere o dado em binario em tal lugar xD
+  setBinMif( Programa* , int , int );
+
   void printAllData ();
 
   /* Construtor */

@@ -34,7 +34,7 @@ int main(int argc, char const *argv[]) {
   }
 
   Linker linker(sArgs, bVerbose); // Inicia o linkador com os programas
-  linker.appendOutput();
+  linker.appendFiles();
   linker.updateAddress();
   // - Atualizar tabelas dos símbolos
   // - Encontrar todos os externs e atualizar na table symbol global.

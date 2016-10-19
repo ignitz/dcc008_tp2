@@ -48,6 +48,17 @@ isInteger(const std::string & s) {
    return (*p == 0) ;
 }
 
+std::vector<std::string>
+tokenizer( std::string param, std::string tokens = "\t :;" ) {
+  std::vector<std::string> r;
+  boost::split(r, param, boost::is_any_of(tokens), boost::token_compress_on);
+  for (size_t i = 0; i < r.size(); i++) {
+    if (r[i].size() == 0)
+      r.erase(r.begin() + i);
+  }
+  return r;
+}
+
 void
 print(std::vector <std::string> & v)
 {

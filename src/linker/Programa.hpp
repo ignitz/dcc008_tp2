@@ -6,15 +6,7 @@
 #include <string>
 #include <vector>
 #include "SymbolTable.hpp"
-
-
-/*
- * boost/algorithm/string.hpp
- * Utilizado para extrair tokens de strings
- * Foi o que mais gostei de utilizar mas tem como pré-requisito
- * O C++
- */
-#include <boost/algorithm/string.hpp>
+#include "util.hpp"
 
 /* Files management */
 #include <iomanip>
@@ -48,8 +40,13 @@ public:
   std::vector<
       std::vector< std::string > > getFileMif();
   void writeFileMif( std::string );
+  void setBeginMif();
 
   bool setVerbose ( bool );
+
+  std::string getLineNoMove();
+  std::string getSecondLineNoMove();
+  std::string getLine();
   bool readTable ();
 
   void translatePositionLocal( int );

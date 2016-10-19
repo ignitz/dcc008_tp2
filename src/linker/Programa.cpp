@@ -88,7 +88,7 @@ Programa::getFileMif() {
 
     if ( (state == 1) && (line.size() >= 8) ) {
       if (line[0] == '[') break;
-      boost::split(fields, line, boost::is_any_of("\t :;"), boost::token_compress_on);
+      fields = tokenizer(line, "\t :;");
       for (size_t i = 0; i < fields.size(); i++)
         if (fields[i].size() == 0) fields.erase(fields.begin() + i);
       r.push_back(fields);
@@ -105,9 +105,40 @@ Programa::getFileMif() {
   }
 }
 
-void
+void // Escreve uma string no arquivo
 Programa::writeFileMif( std::string buffer ) {
   this->fileMif << buffer;
+}
+
+void // Se posiciona no início do arquivo
+Programa::setBeginMif() {
+  this->fileMif.seekg(0, this->fileMif.beg);
+}
+
+std::string // Lê uma linha e volta para a posição original
+Programa::getLineNoMove() {
+  std::string line;
+  std::streampos iPosition = this->fileMif.tellg();
+  std::getline (this->fileMif, line);
+  this->fileMif.seekg (iPosition);
+  return line;
+}
+
+std::string // Lê a linha abaixo  e volta para a posição original
+Programa::getSecondLineNoMove() {
+  std::string line;
+  std::streampos iPosition = this->fileMif.tellg();
+  std::getline (this->fileMif, line);
+  std::getline (this->fileMif, line);
+  this->fileMif.seekg (iPosition);
+  return line;
+}
+
+std::string // Lê uma linha no arquivo
+Programa::getLine() {
+  std::string line;
+  std::getline (this->fileMif, line);
+  return line;
 }
 
 bool
@@ -126,7 +157,7 @@ Programa::readTable () {
   this->fileStbl.seekg(0, this->fileStbl.beg);
   while (getline(this->fileStbl, line)) {
     // Separa a linha em tokens
-    boost::split(fields, line, boost::is_any_of("\t "), boost::token_compress_on);
+    fields = tokenizer(line, "\t ");
 
     switch (state) {
       case 0: // Size
