@@ -90,8 +90,9 @@ Linker::appendFiles () {
 
 void
 Linker::updateAddress () {
-  std::string line1, line2;
-  std::vector<std::string> fields1, fields2;
+  std::vector<std::string> symbol_names;
+  std::vector<int> locations;
+  int value;
 
   if (this->mainProg->getSize() % 2 != 0) // Faz um alinhamento para par bytes
     this->mainProg->setSize(this->mainProg->getSize() + 1);
@@ -108,8 +109,28 @@ Linker::updateAddress () {
   // Então, a ideia é procurar por todas as tabelas até achar e daí atualizar o valor correto
 
 
-  this->output->setBeginMif();
-  this->setBinMif(this->output, 10, 255);
+  // Aqui insere os valores atualizados de todos os símbolos locais
+  for (auto & modulo : this->modulos) {
+    symbol_names = modulo->getLocalNames();
+    for (auto & name : symbol_names) {
+      value = modulo->getLocalSymbolValue(name);
+      locations = modulo->getLocalLocations(name);
+      for (auto & location : locations) {
+        this->setBinMif(this->output, location + 1, value);
+      }
+    }
+  }
+
+  // TODO Atualizar no MIF todas as Extern
+  // for (auto & modulo : this->modulos) {
+  //   symbol_names = modulo->getExternNames();
+  //   for (auto & name : symbol_names) {
+  //     value = modulo->getExternSymbolValue(name);
+  //     for (auto & location : locations) {
+  //       this->setBinMif(this->output, location + 1, value);
+  //     }
+  //   }
+  // }
 
   if (this->bVerbose) {
     std::cout <<

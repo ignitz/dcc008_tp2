@@ -31,11 +31,18 @@ private:
 public:
   SymbolTable();
 
+  int getValue( std::string );
   void translateSymbol( int );
   bool insertSymbol( std::string );
   bool insertValue( int );
   bool checkSymbol( std::string );
   bool setVerbose( bool );
+
+  std::vector<int>
+  getLocations( std::string );
+
+  std::vector<std::string> getNames();
+
   void printSymbols( );
 
 };

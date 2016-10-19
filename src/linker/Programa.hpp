@@ -32,6 +32,8 @@ public:
   Programa ( std::string );
   virtual ~Programa ();
 
+  bool setVerbose ( bool );
+
   std::string getName ();
   bool setName ( std::string );
   int getSize();
@@ -42,15 +44,21 @@ public:
   void writeFileMif( std::string );
   void setBeginMif();
 
-  bool setVerbose ( bool );
 
   std::string getLineNoMove();
   std::string getSecondLineNoMove();
   std::string getLine();
+
+  int getLocalSymbolValue( std::string );
+  std::vector<std::string> getLocalNames();
+  std::vector<int> getLocalLocations( std::string );
+  int getExternSymbolValue( std::string );
+  std::vector<std::string> getExternNames();
+  std::vector<int> getExternLocations( std::string );
+
   bool readTable ();
 
   void translatePositionLocal( int );
-  void translatePositionExtern( int );
 
   void printAllData (); // DEBUG
 };

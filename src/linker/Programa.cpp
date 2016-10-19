@@ -223,15 +223,41 @@ Programa::readTable () {
   return state == 2 ? true : false;
 }
 
+int
+Programa::getLocalSymbolValue( std::string name ) {
+  return this->tableLocal.getValue(name);
+}
+
+std::vector<std::string>
+Programa::getLocalNames() {
+  return this->tableLocal.getNames();
+}
+
+std::vector<int>
+Programa::getLocalLocations( std::string name ) {
+  return this->tableLocal.getLocations( name );
+}
+
+int
+Programa::getExternSymbolValue( std::string name ) {
+  return this->tableExtern.getValue(name);
+}
+
+std::vector<std::string>
+Programa::getExternNames() {
+  return this->tableExtern.getNames();
+}
+
+std::vector<int>
+Programa::getExternLocations( std::string name ) {
+  return this->tableExtern.getLocations( name );
+}
+
 void
 Programa::translatePositionLocal(int move) {
   this->tableLocal.translateSymbol(move);
 }
 
-void
-Programa::translatePositionExtern(int move) {
-  // this->tableExtern.translateSymbol(move);
-}
 
 void
 Programa::printAllData () { // Imprime todo o conteúdo do módulo

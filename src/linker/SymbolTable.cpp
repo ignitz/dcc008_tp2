@@ -9,6 +9,14 @@ SymbolTable::SymbolTable() {
   // Tá tudo bem Entei
 }
 
+int
+SymbolTable::getValue( std::string name ) {
+  for ( auto const& symbol : this->symbol ) {
+    if (symbol->name.compare(name) == 0) return symbol->value;
+  }
+  return 0;
+}
+
 void
 SymbolTable::translateSymbol( int move ) {
   for (auto const& symbol : this->symbol) {
@@ -53,6 +61,24 @@ SymbolTable::setVerbose(bool bVerbose) {
   for (auto const& symbol : this->symbol)
   symbol->bVerbose = bVerbose;
   return bVerbose;
+}
+
+std::vector<int>
+SymbolTable::getLocations( std::string name ) {
+  std::vector<int> r;
+  for( auto const& symbol : this->symbol )
+    if (symbol->name.compare(name) == 0)
+      return symbol->location;
+  return r;
+}
+
+std::vector<std::string>
+SymbolTable::getNames() {
+  std::vector<std::string> r;
+  for( auto const& symbol : this->symbol ) {
+    r.push_back(symbol->name);
+  }
+  return r;
 }
 
 void // imprime a tabela de símbolos utilizando make v
