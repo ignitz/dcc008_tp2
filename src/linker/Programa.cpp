@@ -223,6 +223,14 @@ Programa::readTable () {
   return state == 2 ? true : false;
 }
 
+bool Programa::checkSymbolLocal( std::string name ) {
+  return this->tableLocal.checkSymbol( name );
+}
+
+bool Programa::checkSymbolExtern( std::string name ) {
+  return this->tableExtern.checkSymbol( name );
+}
+
 int
 Programa::getLocalSymbolValue( std::string name ) {
   return this->tableLocal.getValue(name);
@@ -253,6 +261,11 @@ Programa::getExternLocations( std::string name ) {
   return this->tableExtern.getLocations( name );
 }
 
+bool
+Programa::setExternValue( std::string name , int value ) {
+  return this->tableExtern.setValue( name, value );
+}
+
 void
 Programa::translatePositionLocal(int move) {
   this->tableLocal.translateSymbol(move);
@@ -262,7 +275,8 @@ Programa::translatePositionLocal(int move) {
 void
 Programa::printAllData () { // Imprime todo o conteúdo do módulo
   std::cout << "Programa:" << this->getName() << std::endl;
-  std::cout << "Size = " << this->size << std::endl;
+  std::cout << "Size = " << std::dec << this->size <<
+      " 0x" << std::hex << this->size << std::endl;
   std::cout << "--- Local ----" << std::endl;
   this->tableLocal.printSymbols();
   std::cout << "--- Extern ---" << std::endl;

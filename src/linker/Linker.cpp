@@ -105,8 +105,11 @@ Linker::updateAddress () {
     sumSize += modulo->getSize();
   }
 
-  // TODO Atualizar os extern todos
-  // Então, a ideia é procurar por todas as tabelas até achar e daí atualizar o valor correto
+  // Procura por todas as tabelas até achar e daí atualizar o valor correto
+  this->updateAllExterns(this->mainProg);
+  for (auto& modulo : this->modulos ) {
+    this->updateAllExterns(modulo);
+  }
 
 
   // Aqui insere os valores atualizados de todos os símbolos locais
@@ -121,23 +124,38 @@ Linker::updateAddress () {
     }
   }
 
-  // TODO Atualizar no MIF todas as Extern
-  // for (auto & modulo : this->modulos) {
-  //   symbol_names = modulo->getExternNames();
-  //   for (auto & name : symbol_names) {
-  //     value = modulo->getExternSymbolValue(name);
-  //     for (auto & location : locations) {
-  //       this->setBinMif(this->output, location + 1, value);
-  //     }
-  //   }
-  // }
-
   if (this->bVerbose) {
     std::cout <<
     std::endl <<
     "Imprimindo as tabelas após as atualizações:" << std::endl;
     this->printAllData();
   }
+}
+
+std::vector<Symbol*>
+Linker::updateAllExterns( Programa* programa ) {
+  if (this->bVerbose) {
+    std::cout << "Atualizando Externs do programa " <<
+        programa-> getName() << std::endl;
+
+  }
+  std::vector<Symbol*> symbols;
+
+  for ( auto & name : programa->getExternNames() ) {
+    symbols.push_back(new Symbol (name));
+    symbols[symbols.size()-1]->location = programa->getExternLocations(name);
+
+    for ( auto const& modulo : this->modulos ) { // Pega o último valor declarado
+      if (modulo->checkSymbolLocal(name))
+        symbols[symbols.size()-1]->value = modulo->getLocalSymbolValue( name );
+    }
+    for ( auto const& location : symbols[symbols.size()-1]->location )
+      this->setBinMif(this->output, location + 1, symbols[symbols.size()-1]->value);
+
+    programa->setExternValue( name, symbols[symbols.size()-1]->value );
+  }
+
+  return symbols;
 }
 
 void // Insere o dado em binario em tal lugar xD
@@ -155,10 +173,19 @@ Linker::setBinMif( Programa* programa, int iAddress, int value) {
     programa->getLine();
 
   line = programa->getLineNoMove();
+  if (this->bVerbose){
+    std::cout << "String do arquivo: ";
+    std::cout << line << std::endl;
+  }
 
   if ( std::stoi(line.substr(0, 2), nullptr, 16) == iAddress ) {
-    insert = line.substr(0, line.find_last_of(":")) + ":  " + int_to_binary(value);
+    insert = line.substr(0, line.find_last_of(":")) + ":  " + int_to_binary(value) + ";";
     programa->writeFileMif(insert);
+
+    if (this->bVerbose){
+      std::cout << "String modificada: " ;
+      std::cout << insert << std::endl;
+    }
   };
 }
 

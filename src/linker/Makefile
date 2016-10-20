@@ -201,17 +201,20 @@ about:
 # Execute
 .PHONY: run
 run:
-	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste1main ../tst/tp2teste1calc
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste2main ../tst/tp2teste2calc ../tst/tp2teste2fact
 
 # Execute Verbose
 .PHONY: v
 v:
-	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste1main ../tst/tp2teste1calc -v
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste2main ../tst/tp2teste2calc ../tst/tp2teste2fact -v
 
 .PHONY: ass
 ass:
 	../assembler/montador ../tst/tp2teste1main.a -o ../tst/tp2teste1main.mif -v
 	../assembler/montador ../tst/tp2teste1calc.a -o ../tst/tp2teste1calc.mif -v
+	../assembler/montador ../tst/tp2teste2main.a -o ../tst/tp2teste2main.mif -v
+	../assembler/montador ../tst/tp2teste2calc.a -o ../tst/tp2teste2calc.mif -v
+	../assembler/montador ../tst/tp2teste2fact.a -o ../tst/tp2teste2fact.mif -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)

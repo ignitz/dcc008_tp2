@@ -32,6 +32,7 @@ public:
   SymbolTable();
 
   int getValue( std::string );
+  bool setValue( std::string , int );
   void translateSymbol( int );
   bool insertSymbol( std::string );
   bool insertValue( int );

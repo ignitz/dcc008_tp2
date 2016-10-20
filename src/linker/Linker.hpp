@@ -10,6 +10,7 @@
 #include <fstream>
 
 #include "Programa.hpp"
+#include "SymbolTable.hpp"
 
 #include "util.hpp"
 
@@ -27,6 +28,7 @@ public:
 
   void // Insere o dado em binario em tal lugar xD
   setBinMif( Programa* , int , int );
+  std::vector<Symbol*> updateAllExterns ( Programa* );
 
   void printAllData ();
 

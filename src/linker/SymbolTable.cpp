@@ -17,6 +17,17 @@ SymbolTable::getValue( std::string name ) {
   return 0;
 }
 
+bool
+SymbolTable::setValue( std::string name , int value ) {
+  for ( auto const& symbol : this->symbol ) {
+    if (symbol->name.compare(name) == 0) {
+      symbol->value = value;
+      return true;
+    }
+  }
+  return false;
+}
+
 void
 SymbolTable::translateSymbol( int move ) {
   for (auto const& symbol : this->symbol) {
@@ -85,9 +96,9 @@ void // imprime a tabela de símbolos utilizando make v
 SymbolTable::printSymbols() {
   for ( auto const& symbol : this->symbol ) {
     std::cout << symbol->name << ":" << std::endl;
-    std::cout << symbol->value << "\t";
+    std::cout << std::hex << "0x" << symbol->value << "\t";
     for ( auto const& value : symbol->location )
-      std::cout << value << "\t";
+      std::cout << std::hex << "0x" << value << "\t";
     std::cout << std::endl;
   }
 }

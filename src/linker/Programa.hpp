@@ -49,12 +49,15 @@ public:
   std::string getSecondLineNoMove();
   std::string getLine();
 
+  bool checkSymbolLocal( std::string );
+  bool checkSymbolExtern( std::string );
   int getLocalSymbolValue( std::string );
   std::vector<std::string> getLocalNames();
   std::vector<int> getLocalLocations( std::string );
   int getExternSymbolValue( std::string );
   std::vector<std::string> getExternNames();
   std::vector<int> getExternLocations( std::string );
+  bool setExternValue( std::string , int );
 
   bool readTable ();
 
