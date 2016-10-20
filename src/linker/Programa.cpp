@@ -43,29 +43,29 @@ Programa::~Programa () {
   this->fileStbl.close();
 }
 
-std::string
+std::string // Retorna nome do programa
 Programa::getName () {
   return this->name;
 }
 
-bool
+bool // Seta nome do programa
 Programa::setName ( std::string name ) {
   this->name = name;
   return true; // TODO Quando pode dar false?
 }
 
-int
+int // Retorna tamanho do programa
 Programa::getSize() {
   return this->size;
 }
 
-int
+int // Seta tamanho do programa
 Programa::setSize(int value) {
   this->size = value;
   return value;
 }
 
-bool
+bool // Seta modo verbose
 Programa::setVerbose ( bool bVerbose ) {
   this->bVerbose = bVerbose;
   this->tableLocal.setVerbose(bVerbose);
@@ -73,6 +73,7 @@ Programa::setVerbose ( bool bVerbose ) {
   return this->bVerbose;
 }
 
+// Retorna matriz de tokens do arquivo mif
 std::vector<std::vector<std::string>>
 Programa::getFileMif() {
   std::string line;
@@ -124,7 +125,7 @@ Programa::getLineNoMove() {
   return line;
 }
 
-std::string // Lê a linha abaixo  e volta para a posição original
+std::string // Lê a linha abaixo e volta para a posição original
 Programa::getSecondLineNoMove() {
   std::string line;
   std::streampos iPosition = this->fileMif.tellg();
@@ -141,7 +142,7 @@ Programa::getLine() {
   return line;
 }
 
-bool
+bool // Lê o arquivo ".sbtl" contendo a tabela de símbolos
 Programa::readTable () {
 
   if (!this->fileStbl.is_open()) { // Verifica se o arquivo está aberto.
@@ -223,57 +224,62 @@ Programa::readTable () {
   return state == 2 ? true : false;
 }
 
-bool Programa::checkSymbolLocal( std::string name ) {
+bool // Verifica se o símbolo já existe na tabela local
+Programa::checkSymbolLocal( std::string name ) {
   return this->tableLocal.checkSymbol( name );
 }
 
-bool Programa::checkSymbolExtern( std::string name ) {
+bool // Verifica se o símbolo já existe na tabela extern
+Programa::checkSymbolExtern( std::string name ) {
   return this->tableExtern.checkSymbol( name );
 }
 
-int
+int // Retorna valor a ser substituído do símbolo
 Programa::getLocalSymbolValue( std::string name ) {
   return this->tableLocal.getValue(name);
 }
 
+// Retorna vetor de nomes de símbolos locais
 std::vector<std::string>
 Programa::getLocalNames() {
   return this->tableLocal.getNames();
 }
 
+// Retorna todas as ocorrências do símbolo
 std::vector<int>
 Programa::getLocalLocations( std::string name ) {
   return this->tableLocal.getLocations( name );
 }
 
-int
+int // Retorna valor a ser substituído do símbolo
 Programa::getExternSymbolValue( std::string name ) {
   return this->tableExtern.getValue(name);
 }
 
+// Retorna vetor de nomes de símbolos extern
 std::vector<std::string>
 Programa::getExternNames() {
   return this->tableExtern.getNames();
 }
 
+// Retorna todas as ocorrências do símbolo
 std::vector<int>
 Programa::getExternLocations( std::string name ) {
   return this->tableExtern.getLocations( name );
 }
 
-bool
+bool // Seta valor do símbolo
 Programa::setExternValue( std::string name , int value ) {
   return this->tableExtern.setValue( name, value );
 }
 
-void
+void // Translada os símbolos
 Programa::translatePositionLocal(int move) {
   this->tableLocal.translateSymbol(move);
 }
 
-
-void
-Programa::printAllData () { // Imprime todo o conteúdo do módulo
+void // Imprime todo o conteúdo do módulo
+Programa::printAllData () {
   std::cout << "Programa:" << this->getName() << std::endl;
   std::cout << "Size = " << std::dec << this->size <<
       " 0x" << std::hex << this->size << std::endl;

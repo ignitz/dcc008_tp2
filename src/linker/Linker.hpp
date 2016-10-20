@@ -16,28 +16,37 @@
 
 class Linker {
 private:
-  bool bVerbose;
-  int iNumArgs;
+  bool bVerbose;        // Bool para ativar o modo verbose
+
 public:
-  Programa* output;
-  Programa* mainProg;
-  std::vector<Programa*> modulos;
-
-  void appendFiles (); // Apenda arquivos MIF
-  void updateAddress (); // Desloca o posicionamento absoluto nas tabelas
-
-  void // Insere o dado em binario em tal lugar xD
-  setBinMif( Programa* , int , int );
-  std::vector<Symbol*> updateAllExterns ( Programa* );
-
-  void printAllData ();
+  Programa* output;     // Programa ligado e relocado
+  Programa* mainProg;   // Programa que vai ser inserido no endreço 0
+  std::vector<Programa*> modulos; // Progama contendo módulos adicionais
 
   /* Construtor */
   Linker ( std::vector<std::string> );
   Linker ( std::vector<std::string> , bool );
-  /* Desconstrutor */
+  /* Destrutor */
   virtual ~Linker ();
 
+  // Concatena arquivos MIF (mainProg + modulos)
+  void appendFiles ();
+
+  // Desloca o posicionamento absoluto nas tabelas
+  // e atualiza no programa output
+  void updateAddress ();
+
+  // Atualiza todos os endereços utilizados pelo .extern
+  std::vector<Symbol*>
+  updateAllExterns ( Programa* );
+
+  // Insere o dado em string binario no arquivo MIF
+  // Programa a ser gravado, endereço, e valor a inserir
+  void setBinMif ( Programa* , int , int );
+
+  // Imprime todo o conteúdo da classe.
+  // Utilizado pra DEBUG
+  void printAllData ();
 };
 
 #endif

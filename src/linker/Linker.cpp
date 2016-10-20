@@ -6,7 +6,6 @@
 
 Linker::Linker( std::vector<std::string> sArgs ) {
   this->bVerbose = false;
-  this->iNumArgs = sArgs.size();
 
   // Checar se o arquivo já existe
   this->output = new Programa(sArgs[0], true);
@@ -49,8 +48,9 @@ Linker::~Linker() {
 void // Aqui concatena todos os MIFs em um arquivo temporário
 Linker::appendFiles () {
 
-  this->output->writeFileMif(HEAD_MIF);
+  this->output->writeFileMif(HEAD_MIF); // Insere o cabeçalho do arquivo
 
+  // Copia todo o conteúdo do mainProg ao início do output
   auto fields = this->mainProg->getFileMif();
   for (auto& linefields : fields) {
     if (linefields.size() >= 2) {
@@ -59,17 +59,19 @@ Linker::appendFiles () {
     }
   }
 
+  // iMove serve pra relocacar transladando os endereços
   int iMove = this->mainProg->getSize();
-  if (iMove % 2 != 0) iMove++; // Alinhamento par bytes
+  if (iMove % 2 != 0) iMove++; // Alinhamento em par bytes
+
   std::string address;
 
+  // Neste bloco adiciona os módulos restantes em output
   for (auto& modulo : this->modulos) {
     fields = modulo->getFileMif();
     for (size_t i = 0; i < fields.size(); i++) {
       if (fields[i].size() >= 2) {
         // Translada e converte pra hex
         address = int_to_hex(std::stoi (fields[i][0].insert(0, "0x"), nullptr, 0) + iMove);
-        // Deixa o endereço com caixa alta
         transform(address.begin(), address.end(), address.begin(), ::toupper);
         this->output->writeFileMif(
           address + "        :  " + fields[i][1] + ";\n");
@@ -81,14 +83,13 @@ Linker::appendFiles () {
 
   // Adiciona zeros até o endereço FF
   address = "[" + int_to_hex(iMove) + "..FF]";
-  // Deixa o endereço com caixa alta
+
   transform(address.begin(), address.end(), address.begin(), ::toupper);
   this->output->writeFileMif(address + " :  00000000;\n");
   this->output->writeFileMif(END_MIF);
-
 }
 
-void
+void // Atualiza todas os endereços dos símbolos locais
 Linker::updateAddress () {
   std::vector<std::string> symbol_names;
   std::vector<int> locations;
@@ -98,10 +99,11 @@ Linker::updateAddress () {
     this->mainProg->setSize(this->mainProg->getSize() + 1);
   int sumSize = this->mainProg->getSize();
 
+  // Neste bloco é relocado todos os endereços dos módulos
   for (auto const& modulo : this->modulos) {
-    if (modulo->getSize() % 2 != 0) // Faz um alinhamento para par bytes
+    if (modulo->getSize() % 2 != 0)
       modulo->setSize(modulo->getSize() + 1);
-    modulo->translatePositionLocal(sumSize);
+    modulo->translatePositionLocal(sumSize); // Translada a posição do símbolo
     sumSize += modulo->getSize();
   }
 
@@ -111,7 +113,6 @@ Linker::updateAddress () {
     this->updateAllExterns(modulo);
   }
 
-
   // Aqui insere os valores atualizados de todos os símbolos locais
   for (auto & modulo : this->modulos) {
     symbol_names = modulo->getLocalNames();
@@ -119,6 +120,7 @@ Linker::updateAddress () {
       value = modulo->getLocalSymbolValue(name);
       locations = modulo->getLocalLocations(name);
       for (auto & location : locations) {
+        // Aproveita já atualiza todos os endereços no output MIF
         this->setBinMif(this->output, location + 1, value);
       }
     }
@@ -132,6 +134,7 @@ Linker::updateAddress () {
   }
 }
 
+// Atualiza todos os endereos dos símbolos Externs
 std::vector<Symbol*>
 Linker::updateAllExterns( Programa* programa ) {
   if (this->bVerbose) {
@@ -189,8 +192,8 @@ Linker::setBinMif( Programa* programa, int iAddress, int value) {
   };
 }
 
-void
-Linker::printAllData () { // Imprime todo o conteúdo do linkador
+void // Imprime todo o conteúdo do linkador
+Linker::printAllData () {
   std::cout << "Executando printAllData do Linker" << std::endl;
   std::cout << "- Arquivo de saída MIF" << std::endl;
   this->output->printAllData();
