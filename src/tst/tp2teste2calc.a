@@ -1,12 +1,2 @@
-    load R0 R1
-MULT1: multiply R0 R1
-MULT2: multiply R0 R1
-MULT3: subtract R0 R1
-MULT4: multiply R0 R1
-MULT5: multiply R0 R1
-        jump MULT1
-        jump MULT2
-        jump MULT3
-        jump MULT4
-        jump MULT5
-        ret
+multiplica: multiply R0 R1
+            ret
