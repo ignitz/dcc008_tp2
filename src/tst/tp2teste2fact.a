@@ -22,3 +22,4 @@ _L1:    addi R0 -1
         storei R3 vZero
         ret
 vZero:  .data 2 0
+vX:     .data 2 1
