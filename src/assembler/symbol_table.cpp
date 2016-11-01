@@ -53,17 +53,28 @@ SymbolTable::get_symbol_value(int i) {
     return -1;
 }
 
-int
+int // Retorna o valor do símbolo e adiciona ocorrência na tabela de símbolos
 SymbolTable::get_symbol_value(std::string name) {
   int size = this->symbol.size();
   if (name.back() == ':') name.pop_back();
-  for (int i = 0; i < size; i++)
-  {
-    if (this->symbol[i]->name.compare(name) == 0)
-    {
+  for (int i = 0; i < size; i++) {
+    if (this->symbol[i]->name.compare(name) == 0) {
       this->symbol[i]->location.push_back(this->location_counter);
       return this->symbol[i]->value;
     }
+  }
+  std::cerr << "Warning: Símbolo " << name << " não declarado!" << std::endl;
+  std::cerr << "Continuando compilação!" << std::endl;
+  return -1;
+}
+
+int // Retorna o valor do símbolo sem adicionar ocorrência
+SymbolTable::get_symbol_data(std::string name) {
+  int size = this->symbol.size();
+  if (name.back() == ':') name.pop_back();
+  for (int i = 0; i < size; i++) {
+    if (this->symbol[i]->name.compare(name) == 0)
+      return this->symbol[i]->value;
   }
   std::cerr << "Warning: Símbolo " << name << " não declarado!" << std::endl;
   std::cerr << "Continuando compilação!" << std::endl;

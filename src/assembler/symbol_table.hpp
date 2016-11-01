@@ -36,6 +36,7 @@ public:
   SymbolTable();
   int get_symbol_value( std::string );
   int get_symbol_value( int );
+  int get_symbol_data( std::string );
   bool insertSymbol( std::string , int );
   bool insertSymbol( std::string , int , std::string );
   bool checkSymbol( std::string );

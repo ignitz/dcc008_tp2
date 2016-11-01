@@ -65,7 +65,7 @@ std::string
 TableOpcode::get_data(std::vector<std::string> fields) {
   std::string r;
 
-  if (this->location_counter == this->get_symbol_value(fields[0])) {
+  if (this->location_counter == this->get_symbol_data(fields[0])) {
     int many = std::stoi(fields[2]);
     for (int i = 0; i < many; i++) {
       r += int_to_hex(this->location_counter);
