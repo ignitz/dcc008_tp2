@@ -13,6 +13,8 @@ loadc R4 3
 divide R0 R4
 loadRa 0; Carrega retorno
 moveSp 8;
+storei R0 return
+loadi R0 return
 storei R0 IO;  (A + B + C)/3
 ret
- 
+return: .data 2 0

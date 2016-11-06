@@ -32,3 +32,4 @@ jump _start
 _opcao5: .extern media
 jump _start
 _end: exit
+varX: .data 2 0

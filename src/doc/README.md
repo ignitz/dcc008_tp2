@@ -6,7 +6,7 @@
 
 ### Introdução
 
-O trabalho consiste em criar um *linker* para o *montador* do Wombat2 feito no [Trabalho Prático 1][github_TP1].
+O trabalho consiste em criar um *linker* para o *montador* do Wombat2 feito no [Trabalho Prático 1 (Github)][github_TP1].
 
 [github_TP1]: https://github.com/ignitz/dcc008_tp1
 
@@ -16,7 +16,7 @@ O trabalho consiste em criar um *linker* para o *montador* do Wombat2 feito no [
 
 No Montador, tivemos que modificar as classes **SymbolTable** e **OpcodeTable** para prepará-lo para o ligador.
 
-Primeiro adaptamos o **.extern** para guardar o símbolo com o valor **0** e tipo **EXTERN** para diferenciar.  
+Primeiro adaptamos o **.extern** para guardar o símbolo com o valor de enrereço **0** e tipo **EXTERN** para diferenciar dos outros tipos de símbolos usados.  
 Depois adicionamos o suporte para "*lembrar*" os usos do *labels* (\_label), *variáveis* (num) e *funções* (.extern).
 
 Exemplo utilizando o `-v` (verbose) para imprimir a tabela de símbolos.
@@ -60,7 +60,7 @@ Utilizando o mesmo formato descrito na seção [Modificações](###Modificaçõe
 
 O linker foi implementado do seguinte modo.
 
-- **SymbolTable**: De modo semelhante da classe utilizada no montador adaptado para o Linker.
+- **SymbolTable**: De modo semelhante da classe utilizada no montador adaptado para o Linker, não reutilizei completamente o código pra não dar conflito.
 - **Programa**: Classe que contém os arquivos "**MIF**" e "**SBTL**" e contém sua própria tabela de símbolos **locais** e **extern**.
 - **Linker**: Classe que gerencia os programas:
   - **output**: Arquivo que vai ser o arquivo ligado e relocado.
@@ -74,8 +74,8 @@ O Linker utiliza o padrão de argumentos proposto na especificação, com um bô
 linker programa.mif main modulo1 modulo2 ... moduloN [-v]
 ```
 
-> TODO
-> Escrever detalhadamente o que acontece durante a execução do linker.
+O linker lê todos os módulos (mif, sbtl) atualizando os endereços e concatenando no arquivo programa.mif (por padrão). Neste passo ele atualiza apenas as variáveis/label locais. Ou seja, tem um "escopo" utilizado em cada módulo podendo utilizar o nome da mesma variável em escopos diferentes.
+Já os **EXTERN**'s são um caso a parte, pois eles são atualizados após o passo acima.
 
 ### Makefile
 
@@ -96,11 +96,13 @@ Ligador Wombat2
 
     Uso: linker programa.mif main modulo1 modulo2 ... moduloN [-v]
 ```
+- **make ass**: Executa o montador para compilar os módulos dos arquivos .a.
 
-- **make run**: Executa o montador normalmente nos arquivos de testes *tp2testeX<modulo>.a*.
+- **make run**: Executa o montador normalmente nos arquivos de testes das **5 opções**.
 
 - **make v**: Executa em modo verbose utilizando os arquivos do **run**. Imprime no terminal todo o processo da linkagem incluindo a tabela de símbolos atualizada após a relocação.
 
+<!-- pagebreak -->
 #### Executar diretamente
 
 O linker pode ser executado diretamente no formato.  
@@ -108,19 +110,83 @@ O linker pode ser executado diretamente no formato.
 
 Lembrando que o arquivo de saída tem extensão "mif" mas os módulos não.
 
-Na compilação é necessária o uso do **c++11** pois utilizo uma funções presentes nesta versão. É compilado sem problemas no **Eufrates**, computador do **CRC**.
+Na compilação é necessária o uso do **c++11** pois utilizo uma funções presentes nesta versão. É compilado sem problemas no **Eufrates**, computador da graduação do **CRC**.
 
+### Uso
 
+Se encontra no [README.md](../src/linker/README.md) contido na pasta do **linker**.
+Todos os testes foram *comprovados* na computador da graduação **Eufrates**.
 
 ### Testes
 
-> TODO
+Segue o pseudo-código (C-like) para indicar o que o programa, depois de linkado, faz:
+```c
+while(true) {
+  OP << entrada; // Recebe a operação
+  // Entrada dos parâmetros A, B, C
+  A << entrada;
+  B << entrada;
+  C << entrada;
+  switch (OP) {
+    case 1:
+      max(A, B, C);
+      break;
+    case 2:
+      min(A, B, C);
+      break;
+    case 3:
+      sum(A, B, C);
+      break;
+    case 4:
+      prod(A, B, C);
+      break;
+    case 5:
+      media(A, B, C);
+      break;
+    default:
+      exit();
+  }
+}
+```
 
+Seguem screenshots de testes no CPUSIM:
+
+**OP é a operação a ser realizada.**
+- Se OP = 1, o programa deverá apresentar o maior dos 3 números,
+![max.png](img/max.png)
+
+- Se OP = 2, o programa exibirá o menor dos 3,
+![min.png](img/min.png)
+
+<!-- pagebreak -->
+- Se OP = 3, o programa exibirá a soma dos 3,
+![sum.png](img/sum.png)
+
+- Se OP = 4, o programa exibirá o produto dos 3,
+![prod.png](img/prod.png)
+
+<!-- pagebreak -->
+- Se OP = 5, o programa exibirá a média dos 3,
+![media.png](img/media.png)
+
+- Para valores de OP diferentes de 1, 2, 3, 4 ou 5, o programa não fará nada.  
+**Nesse caso ele da um jump pro comando exit**
+
+Durante o desenvolvimento do linker utilizei os arquivos **tp2teste2main.a**, **tp2teste2calc.a** e **tp2teste2fact** disponibilizado pra testes no TP1 para usa-los neste TP.
+
+**Ideia descartada:**
+- Tivemos a ideia de dar suporte a pseudo istruções no .extern tal que faria a chamada **call** e **troca de contexto** dos 8 registradores mais o **RA** para dar suporte a recursão, etc. Mas desistimos de inserir pois com o programa teste das 5 opções não caberia nos 255 bytes da memória RAM pois o bloco da pilha (**sp**) encontraria rapidamente com o bloco do programa (semelhante ao **.text** do UNIX).
+
+> Isso é tudo corretor. A qual é a boa de hoje é:
+> - [Melhor jogo da mundial 2016 de League of Legends](https://www.youtube.com/watch?v=WAybE0ZmtPU) (Apesar do Samsung ter perdido)
+> - [Black Mirror](https://www.netflix.com/title/70264888) (Sensacional)
+
+<!-- pagebreak -->
 ### Referências
 
 - [cplusplus Reference C++11](http://www.cplusplus.com/reference/)
-- [Organização Estruturada de Computadores - Andrew S. Tanenbaum][Livro1]
-
+- Organização Estruturada de Computadores - Andrew S. Tanenbaum (sexta edição)
+- CPUSim Help em HTML que vem no pacote
 
 <!-- ### Decisões (Aqui coloco minhas epifanias durante o desenvolvimento)
 

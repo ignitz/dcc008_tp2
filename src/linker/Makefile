@@ -201,7 +201,7 @@ about:
 # Execute
 .PHONY: run
 run:
-	@./$(BIN_NAME) ../tst/programa.mif ../tst/main ../tst/max ../tst/min ../tst/soma ../tst/prod ../tst/media -v
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/main ../tst/max ../tst/min ../tst/soma ../tst/prod ../tst/media
 # @./$(BIN_NAME) ../tst/programa.mif ../tst/main ../tst/
 
 # Execute Verbose
