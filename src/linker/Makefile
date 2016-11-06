@@ -201,20 +201,28 @@ about:
 # Execute
 .PHONY: run
 run:
-	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste2main ../tst/tp2teste2calc ../tst/tp2teste2fact
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/main ../tst/max ../tst/min ../tst/soma ../tst/prod ../tst/media -v
+# @./$(BIN_NAME) ../tst/programa.mif ../tst/main ../tst/
 
 # Execute Verbose
 .PHONY: v
 v:
-	@./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste2main ../tst/tp2teste2calc ../tst/tp2teste2fact -v
+	@./$(BIN_NAME) ../tst/programa.mif ../tst/main ../tst/max ../tst/min ../tst/soma ../tst/prod ../tst/media -v
+# @./$(BIN_NAME) ../tst/programa.mif ../tst/tp2teste2main ../tst/tp2teste2calc ../tst/tp2teste2fact -v
 
 .PHONY: ass
 ass:
-	../assembler/montador ../tst/tp2teste1main.a -o ../tst/tp2teste1main.mif -v
-	../assembler/montador ../tst/tp2teste1calc.a -o ../tst/tp2teste1calc.mif -v
-	../assembler/montador ../tst/tp2teste2main.a -o ../tst/tp2teste2main.mif -v
-	../assembler/montador ../tst/tp2teste2calc.a -o ../tst/tp2teste2calc.mif -v
-	../assembler/montador ../tst/tp2teste2fact.a -o ../tst/tp2teste2fact.mif -v
+	../assembler/montador ../tst/main.a -o ../tst/main.mif
+	../assembler/montador ../tst/max.a -o ../tst/max.mif
+	../assembler/montador ../tst/min.a -o ../tst/min.mif
+	../assembler/montador ../tst/soma.a -o ../tst/soma.mif
+	../assembler/montador ../tst/prod.a -o ../tst/prod.mif
+	../assembler/montador ../tst/media.a -o ../tst/media.mif
+# ../assembler/montador ../tst/tp2teste1main.a -o ../tst/tp2teste1main.mif -v
+# ../assembler/montador ../tst/tp2teste1calc.a -o ../tst/tp2teste1calc.mif -v
+# ../assembler/montador ../tst/tp2teste2main.a -o ../tst/tp2teste2main.mif -v
+# ../assembler/montador ../tst/tp2teste2calc.a -o ../tst/tp2teste2calc.mif -v
+# ../assembler/montador ../tst/tp2teste2fact.a -o ../tst/tp2teste2fact.mif -v
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME)

@@ -1,0 +1,13 @@
+; Programa que calcula o produto de 3 numeros como entrada.
+; int * int * int -> int
+prod: moveSp -8
+loadc R0 1
+loadSp R1 2; A
+loadSp R2 4; B
+loadSp R3 6; C
+multiply R0 R1
+multiply R0 R2
+multiply R0 R3
+moveSp 8;
+storei R0 IO
+ret

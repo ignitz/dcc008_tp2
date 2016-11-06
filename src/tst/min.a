@@ -1,0 +1,22 @@
+; Programa que retorna R0 e imprime o minimo de 3 numeros.
+; int * int * int -> int
+min: moveSp -8
+loadSp R1 2; A
+loadSp R2 4; B
+loadSp R3 6; C
+slt R0 R1 R2
+jmpz R0 _else1
+slt R0 R1 R3
+jmpz R0 _else2
+move R0 R1
+jump _break
+_else2: move R0 R3
+jump _break
+_else1:  slt R0 R2 R3
+jmpz R0 _else3
+move R0 R2
+jump _break
+_else3: move R0 R3
+_break: moveSp 8
+storei R0 IO
+ret

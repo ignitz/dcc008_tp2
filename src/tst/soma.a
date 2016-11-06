@@ -1,0 +1,13 @@
+; Programa que calcula a soma de 3 numeros.
+; int * int * int -> int
+soma: moveSp -8
+loadc R0 0
+loadSp R1 2; A
+loadSp R2 4; B
+loadSp R3 6; C
+add R0 R1
+add R0 R2
+add R0 R3
+moveSp 8;
+storei R0 IO ; A + B + C
+ret

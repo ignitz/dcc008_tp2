@@ -1,0 +1,22 @@
+; Programa que retorna R0 e imprime o maximo de 3 numeros.
+; int * int * int -> int
+max: moveSp -8; Tipo registro de ativacao
+loadSp R1 2; A
+loadSp R2 4; B
+loadSp R3 6; C
+sgt R0 R1 R2 ; ? R1 > R2
+jmpz R0 _else1
+sgt R0 R1 R3; ? R1 > R3
+jmpz R0 _else2
+move R0 R1 ; max = R1
+jump _break
+_else2: move R0 R3; max = R3 pois R3 > R1 > R2
+jump _break
+_else1:  sgt R0 R2 R3; R2 > R1 - ? R2 > R3
+jmpz R0 _else3
+move R0 R2; max = R2
+jump _break
+_else3: move R0 R3; R3 > R2 > R1
+_break: moveSp 8
+storei R0 IO
+ret

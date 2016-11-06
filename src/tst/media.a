@@ -1,22 +1,18 @@
-; Programa que calcula a media de dois numeros como entrada.
-; int * int -> int
-
-          loadi R0 254
-          loadi R1 254
-          storeSp R0 -2
-          storeSp R1 -4
-          moveSp -4
-          call _MEDIA
-          loadSp R0 0
-          moveSp 2
-          storei R0 254
-          exit
-_MEDIA:   loadSp R0 0
-          loadSp R1 2
-          moveSp 4
-          add R0 R1
-          loadc R1 2
-          divide R0 R1
-          storeSp R0 -2
-          moveSp -2
-          ret
+; Programa que calcula a media de 3 numeros.
+; int * int * int -> int
+media: moveSp -8 ; Pula parametro
+storeRa 0
+loadc R0 0
+loadSp R1 2; A
+loadSp R2 4; B
+loadSp R3 6; C
+add R0 R1
+add R0 R2
+add R0 R3
+loadc R4 3
+divide R0 R4
+loadRa 0; Carrega retorno
+moveSp 8;
+storei R0 IO;  (A + B + C)/3
+ret
+ 
