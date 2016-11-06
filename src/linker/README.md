@@ -1,6 +1,6 @@
 # Linker
 
-> Mais informações você encontra na [documentação](../../doc/).
+> Mais informações você encontra na [documentação](../doc/).
 
 Inicialmente você deve compilar o montador na pasta **assembler**. Se tudo der certo, aparecerá como abaixo.
 ```

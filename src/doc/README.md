@@ -114,7 +114,7 @@ Na compilação é necessária o uso do **c++11** pois utilizo uma funções pre
 
 ### Uso
 
-Se encontra no [README.md](../src/linker/README.md) contido na pasta do **linker**.
+Se encontra no [README.md](../linker/README.md) contido na pasta do **linker**.
 Todos os testes foram *comprovados* na computador da graduação **Eufrates**.
 
 ### Testes
